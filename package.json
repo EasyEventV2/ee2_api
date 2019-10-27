@@ -1,0 +1,23 @@
+{
+  "name": "ee2_rest_api",
+  "version": "1.0.0",
+  "description": "REST API Server for Easy Event v2 App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EasyEventV2/ee2_api.git"
+  },
+  "keywords": [
+    "EE2",
+    "API"
+  ],
+  "author": "DuyPV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EasyEventV2/ee2_api/issues"
+  },
+  "homepage": "https://github.com/EasyEventV2/ee2_api#readme"
+}
