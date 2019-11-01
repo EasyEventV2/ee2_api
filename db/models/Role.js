@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 
 const roleSchema = new Schema({
-    id: SchemaTypes.ObjectId,
+    _id: SchemaTypes.ObjectId,
     permissions: [{
         type: SchemaTypes.ObjectId,
         ref: 'Permission'

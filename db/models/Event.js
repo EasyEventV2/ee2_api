@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 
 const eventSchema = new Schema({
-    id: SchemaTypes.ObjectId,
+    _id: SchemaTypes.ObjectId,
     name: String,
     description: String,
     category: [{

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 
 const permissionSchema = new Schema({
-    id: SchemaTypes.ObjectId,
+    _id: SchemaTypes.ObjectId,
     data: {
         target: String,
         scope: String,

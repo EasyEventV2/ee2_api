@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 
 const guestSchema = new Schema({
-    id: ObjectId,
+    _id: SchemaTypes.ObjectId,
     event_id: {
         type: SchemaTypes.ObjectId,
         ref: 'Event'

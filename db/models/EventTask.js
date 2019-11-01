@@ -3,17 +3,26 @@ const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 
 const eventTaskSchema = new Schema({
-    id: SchemaTypes.ObjectId,
-    event_id: SchemaTypes.ObjectId,
+    _id: SchemaTypes.ObjectId,
+    event_id: {
+        type: SchemaTypes.ObjectId,
+        ref: 'Event'
+    },
     title: String,
     description: String,
-    creator_id: SchemaTypes.ObjectId,
-    assignee_ids: [SchemaTypes.ObjectId],
+    creator_id: {
+        type: SchemaTypes.ObjectId,
+        ref: 'User'
+    },
+    assignee_ids: [{
+        type: SchemaTypes.ObjectId,
+        ref: 'User'
+    }],
     checklists: [{
-        id: SchemaTypes.ObjectId,
+        _id: SchemaTypes.ObjectId,
         title: String,
         item: [{
-            id: SchemaTypes.ObjectId,
+            _id: SchemaTypes.ObjectId,
             title: String,
             checked: Boolean,
             resolve_history: [{
@@ -28,7 +37,7 @@ const eventTaskSchema = new Schema({
     status: String,
     due: Date,
     comments: [{
-        id: SchemaTypes.ObjectId,
+        _id: SchemaTypes.ObjectId,
         timestamp: Date,
         user_id: {
             type: SchemaTypes.ObjectId,
