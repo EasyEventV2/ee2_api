@@ -4,7 +4,10 @@ const SchemaTypes = Schema.Types;
 
 const guestSchema = new Schema({
     id: ObjectId,
-    event_id: SchemaTypes.ObjectId,
+    event_id: {
+        type: SchemaTypes.ObjectId,
+        ref: 'Event'
+    },
     email: String,
     info: {
         phone_number: String,

@@ -4,10 +4,19 @@ const SchemaTypes = Schema.Types;
 
 const groupSchema = new Schema({
     id: SchemaTypes.ObjectId,
-    event_id: SchemaTypes.ObjectId,
-    users: [SchemaTypes.ObjectId],
+    event_id: {
+        type: SchemaTypes.ObjectId,
+        ref: 'Event'
+    },
+    users: [{
+        type: SchemaTypes.ObjectId,
+        ref: 'User'
+    }],
     name: String,
-    role_id: SchemaTypes.ObjectId
+    role_id: {
+        type: SchemaTypes.ObjectId,
+        ref: 'Role'
+    }
 })
 
 const Group = mongoose.model('Group', groupSchema, 'groups');

@@ -6,7 +6,10 @@ const eventSchema = new Schema({
     id: SchemaTypes.ObjectId,
     name: String,
     description: String,
-    category: [ObjectId],
+    category: [{
+        type: SchemaTypes.ObjectId,
+        ref: 'Category'
+    }],
     contact: {
         phone_number: String,
         email: String,

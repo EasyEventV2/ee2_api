@@ -17,7 +17,10 @@ const eventTaskSchema = new Schema({
             title: String,
             checked: Boolean,
             resolve_history: [{
-                user_id: SchemaTypes.ObjectId,
+                user_id: {
+                    type: SchemaTypes.ObjectId,
+                    ref: 'User'
+                },
                 action: String
             }]
         }]
@@ -27,7 +30,10 @@ const eventTaskSchema = new Schema({
     comments: [{
         id: SchemaTypes.ObjectId,
         timestamp: Date,
-        user_id: SchemaTypes.ObjectId,
+        user_id: {
+            type: SchemaTypes.ObjectId,
+            ref: 'User'
+        },
         content: String
     }]
 })

@@ -4,7 +4,10 @@ const SchemaTypes = Schema.Types;
 
 const roleSchema = new Schema({
     id: SchemaTypes.ObjectId,
-    permissions: [SchemaTypes.ObjectId],
+    permissions: [{
+        type: SchemaTypes.ObjectId,
+        ref: 'Permission'
+    }],
     name: String,
     type: String
 })
