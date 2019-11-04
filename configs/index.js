@@ -1,5 +1,6 @@
 const deepFreeze = require('deep-freeze');
-
+const dotenv = require('dotenv');
+dotenv.config();
 const devConfig = require('./dev');
 const prodConfig = require('./prod');
 const localConfig = require('./local');

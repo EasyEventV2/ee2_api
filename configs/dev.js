@@ -1,6 +1,3 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
 const DB_USER = process.env.DB_USER;
 const DB_PWD = process.env.DB_PWD;
 const DB_HOST = process.env.DB_HOST;
