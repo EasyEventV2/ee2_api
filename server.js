@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3003;
-const mongooseConnnection = require('./db/utils/connection');
+const mongooseConnnection = require('db/utils/connection');
 
 const morgan = require('morgan');
 app.use(morgan('dev'));
