@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
+
 const SchemaTypes = Schema.Types;
 
 const roleSchema = new Schema({
-    _id: SchemaTypes.ObjectId,
-    permissions: [{
-        type: SchemaTypes.ObjectId,
-        ref: 'Permission'
-    }],
-    name: String,
-    type: String
-})
+  _id: SchemaTypes.ObjectId,
+  permissions: [{
+    type: SchemaTypes.ObjectId,
+    ref: 'Permission',
+  }],
+  name: String,
+  type: String,
+});
 
-const Role = mongoose.model('Role', roleSchema, 'roles');
-module.exports = Role;
+const Role = model('Role', roleSchema, 'roles');
+export default Role;

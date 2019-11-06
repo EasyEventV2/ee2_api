@@ -1,24 +1,24 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
+
 const SchemaTypes = Schema.Types;
 
 const eventSchema = new Schema({
-    _id: SchemaTypes.ObjectId,
-    name: String,
-    description: String,
-    category: [{
-        type: SchemaTypes.ObjectId,
-        ref: 'Category'
-    }],
-    contact: {
-        phone_number: String,
-        email: String,
-        facebook: String,
-        website: String
-    },
-    start_time: Date,
-    end_time: Date
-})
+  _id: SchemaTypes.ObjectId,
+  name: String,
+  description: String,
+  category: [{
+    type: SchemaTypes.ObjectId,
+    ref: 'Category',
+  }],
+  contact: {
+    phone_number: String,
+    email: String,
+    facebook: String,
+    website: String,
+  },
+  start_time: Date,
+  end_time: Date,
+});
 
-const Event = mongoose.model('Event', eventSchema, 'events');
-module.exports = Event;
+const Event = model('Event', eventSchema, 'events');
+export default Event;

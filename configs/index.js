@@ -1,25 +1,23 @@
-const deepFreeze = require('deep-freeze');
-const dotenv = require('dotenv');
-dotenv.config();
-const devConfig = require('./dev');
-const prodConfig = require('./prod');
-const localConfig = require('./local');
+import deepFreeze from 'deep-freeze';
+import devConfig from './dev';
+import localConfig from './local';
+import prodConfig from './prod';
 
 const env = process.env.APP_ENV;
 
 let envConfig = {};
 if (env === 'development') {
-    envConfig = devConfig;
+  envConfig = devConfig;
 } else if (env === 'production') {
-    envConfig = prodConfig;
+  envConfig = prodConfig;
 } else {
-    envConfig = localConfig;
+  envConfig = localConfig;
 }
 
 const configs = {
-    ...envConfig
-}
+  ...envConfig,
+};
 
 deepFreeze(configs);
 
-module.exports = configs;
+export default configs;

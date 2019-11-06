@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
+
 const SchemaTypes = Schema.Types;
 
 const categorySchema = new Schema({
-    _id: SchemaTypes.ObjectId,
-    value: String
-})
+  _id: SchemaTypes.ObjectId,
+  value: String,
+});
 
-const Category = mongoose.model('Category', categorySchema, 'categories');
-module.exports = Category;
+const Category = model('Category', categorySchema, 'categories');
+export default Category;
