@@ -34,8 +34,11 @@ async function checkLogin(usr, pwd) {
     throw err;
   }
   if (encryption.isEqual(pwd, user.get('password_hashed'))) {
-    const token = jwt.sign({ username: user.get('username') }, secretKey, { expiresIn: '5h' });
-    data = token;
+    const token = jwt.sign({ uid: user.get('_id') }, secretKey, { expiresIn: '5h' });
+    data = {
+      // eslint-disable-next-line object-shorthand
+      token: token,
+    };
   } else {
     throw new PasswordNotMatchError();
   }
