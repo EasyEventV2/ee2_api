@@ -11,7 +11,7 @@ const secretKey = configs.SECRET_KEY;
  * @param {String} userId
  * @returns {Object} response data: User
  */
-async function findById(userId) {
+async function findUserById(userId) {
   let data = {};
   const user = await User.findOne(
     { _id: userId },
@@ -42,4 +42,7 @@ async function checkLogin(usr, pwd) {
   return data;
 }
 
-export default { findById, checkLogin };
+export default {
+  findUserById,
+  checkLogin,
+};
