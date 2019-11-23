@@ -2,7 +2,15 @@
   "presets": ["@babel/preset-env"],
   "plugins": [
     ["module-resolver", {
-      "root": ["./"]
+      "root": ["./"],
+      "alias": {
+        "db": "./db",
+        "core": "./core",
+        "middlewares": "./middlewares",
+        "routes": "./routes",
+        "controllers": "./controllers",
+        "utils": "./utils"
+      }
     }]
   ]
 }
