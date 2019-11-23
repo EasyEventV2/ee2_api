@@ -34,3 +34,23 @@ export class PasswordNotMatchError extends ServerAPIError {
     });
   }
 }
+
+export class UnauthorizedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40101,
+      message: 'Unauthorized',
+      ...payload,
+    });
+  }
+}
+
+export class InvalidTokenError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40301,
+      message: 'Fobbiden: Invalid Token',
+      ...payload,
+    });
+  }
+}
