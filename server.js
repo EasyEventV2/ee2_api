@@ -5,8 +5,10 @@ require('dotenv').config({
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const mongo = require('./db/utils/connection');
-const routes = require('./routes/index').default;
+const mongo = require('db/utils/connection');
+const routes = require('routes/index').default;
+const errorHandler = require('middlewares/errorHandler').default;
+const notFoundRequestHandler = require('middlewares/notFoundRequestHandler').default;
 
 const app = express();
 const port = process.env.PORT || 3003;
@@ -15,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use('/', routes);
+app.use(errorHandler);
+app.use(notFoundRequestHandler);
 
 const startApp = async () => {
   try {
