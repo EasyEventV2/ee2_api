@@ -2,7 +2,7 @@ import userCore from 'core/users';
 
 const getUserById = async (req, res, next) => {
   try {
-    const dataResponse = await userCore.findById(req.params.userId);
+    const dataResponse = await userCore.findUserById(req.params.userId);
     res.json({
       data: dataResponse,
     });
