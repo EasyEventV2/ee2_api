@@ -1,11 +1,10 @@
-// import { CastError } from 'mongoose';
+import configs from 'configs/index';
 import jwt from 'jsonwebtoken';
 import encryption from 'utils/encryption';
 import { UserNotFoundError, PasswordNotMatchError } from 'common/error';
 import User from 'db/models/User';
 
-const secretKey = process.env.SECRET_KEY;
-
+const secretKey = configs.SECRET_KEY;
 /**
  *
  * Find an user that matches given userId
