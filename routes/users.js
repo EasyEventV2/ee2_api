@@ -12,4 +12,5 @@ router.route('/:userId/events')
 
 router.route('/login')
   .post(userController.login);
+
 export default router;
