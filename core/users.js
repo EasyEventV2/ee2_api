@@ -1,98 +1,46 @@
-import { CastError } from 'mongoose';
+// import { CastError } from 'mongoose';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import User from '../db/models/User';
+import encryption from 'utils/encryption';
+import { UserNotFoundError, PasswordNotMatchError } from 'common/error';
+import User from 'db/models/User';
 
 const secretKey = process.env.SECRET_KEY;
 
 /**
  *
- * @name findById
- * @description find an user that matches given userId
+ * Find an user that matches given userId
  * @param {String} userId
- * @returns {Object} response data
+ * @returns {Object} response data: User
  */
 async function findById(userId) {
-  const result = {};
-  try {
-    const user = await User
-      .findOne({ _id: userId }, { _id: 0, password_hashed: 0, password_salt: 0 });
-    if (!user) {
-      result.status = 404;
-      result.body = {
-        error: {
-          code: 40401,
-          message: 'Not Found: User Not Found',
-          data: {},
-        },
-      };
-    } else {
-      result.status = 200;
-      result.body = {
-        data: user,
-      };
-    }
-  } catch (err) {
-    if (err instanceof CastError) {
-      result.status = 400;
-      result.body = {
-        error: {
-          code: 40001,
-          message: 'Bad Request: Unable to cast ObjectId',
-          data: {},
-        },
-      };
-    } else {
-      result.status = 500;
-      result.body = {
-        error: {
-          code: 500,
-          message: 'Internal Server Error',
-          data: {},
-        },
-      };
-    }
+  let data = {};
+  const user = await User.findOne(
+    { _id: userId },
+    { _id: 0, password_hashed: 0, password_salt: 0 },
+  );
+
+  if (!user) {
+    const err = new UserNotFoundError();
+    throw err;
   }
-  return result;
+  data = user;
+  return data;
 }
 
-async function checkLogin(_username, _password) {
-  const result = {
-    status: 500,
-    body: {
-      error: {
-        code: 500,
-        message: 'Internal Server Error',
-        data: {},
-      },
-    },
-  };
-  try {
-    const user = await User.findOne({ username: _username });
-    if (!user) {
-      result.status = 404;
-      result.body.error.code = 40402;
-      result.body.error.message = 'User Not Found';
-      return result;
-    }
-    const isCorrectPwd = await bcrypt.compare(_password, user.get('password_hashed'));
-    if (isCorrectPwd) {
-      const jwToken = jwt.sign({ username: user.get('username') }, secretKey, { expiresIn: '5h' });
-      result.status = 200;
-      result.body = {
-        data: {
-          token: jwToken,
-        },
-      };
-    } else {
-      result.status = 400;
-      result.body.error.code = 40002;
-      result.body.error.message = 'Invalid password';
-    }
-  } catch (err) {
-    console.error(err);
+async function checkLogin(usr, pwd) {
+  let data = {};
+  const user = await User.findOne({ username: usr });
+  if (!user) {
+    const err = new UserNotFoundError({ code: 40402, message: 'Invalid Username' });
+    throw err;
   }
-  return result;
+  if (encryption.isEqual(pwd, user.get('password_hashed'))) {
+    const token = jwt.sign({ username: user.get('username') }, secretKey, { expiresIn: '5h' });
+    data = token;
+  } else {
+    throw new PasswordNotMatchError();
+  }
+  return data;
 }
 
 export default { findById, checkLogin };
