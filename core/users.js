@@ -4,7 +4,6 @@ import encryption from 'utils/encryption';
 import { UserNotFoundError, PasswordNotMatchError } from 'common/error';
 import User from 'db/models/User';
 
-const secretKey = configs.SECRET_KEY;
 /**
  *
  * Find an user that matches given userId
@@ -26,6 +25,12 @@ async function findUserById(userId) {
   return data;
 }
 
+/**
+ * Check if given information is correct for login
+ * @param {String} usr
+ * @param {String} pwd
+ * @returns {Object} response data: bearer token with userId if success
+ */
 async function checkLogin(usr, pwd) {
   let data = {};
   const user = await User.findOne({ username: usr });
@@ -34,7 +39,7 @@ async function checkLogin(usr, pwd) {
     throw err;
   }
   if (encryption.isEqual(pwd, user.get('password_hashed'))) {
-    const token = jwt.sign({ uid: user.get('_id') }, secretKey, { expiresIn: '5h' });
+    const token = jwt.sign({ uid: user.get('_id') }, configs.SECRET_KEY, { expiresIn: '5h' });
     data = {
       // eslint-disable-next-line object-shorthand
       token: token,
