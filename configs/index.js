@@ -1,7 +1,8 @@
 import deepFreeze from 'deep-freeze';
-import devConfig from './dev';
-import localConfig from './local';
-import prodConfig from './prod';
+import baseConfig from 'configs/base';
+import devConfig from 'configs/dev';
+import localConfig from 'configs/local';
+import prodConfig from 'configs/prod';
 
 const env = process.env.APP_ENV;
 
@@ -16,6 +17,7 @@ if (env === 'development') {
 
 const configs = {
   ...envConfig,
+  ...baseConfig,
 };
 
 deepFreeze(configs);

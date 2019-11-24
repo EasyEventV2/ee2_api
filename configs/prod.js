@@ -1,13 +1,9 @@
-const {
-  DB_HOST, DB_PORT, DB_USER, DB_PWD,
-} = process.env;
+import baseConfig from 'configs/base';
 
-const DB_URL = `mongodb://${DB_HOST}:${DB_PORT}/easy-event-v2`;
+const DB_URL = `mongodb://${baseConfig.DB_HOST}:${baseConfig.DB_PORT}/easy-event-v2`;
 
 const prodConfig = {
   DB_URL,
-  DB_USER,
-  DB_PWD,
 };
 
 export default prodConfig;
