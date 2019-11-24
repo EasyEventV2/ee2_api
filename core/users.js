@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 import configs from 'configs/index';
 import jwt from 'jsonwebtoken';
 import encryption from 'utils/encryption';
@@ -39,9 +40,10 @@ async function checkLogin(usr, pwd) {
     throw err;
   }
   if (encryption.isEqual(pwd, user.get('password_hashed'))) {
-    const token = jwt.sign({ uid: user.get('_id') }, configs.SECRET_KEY, { expiresIn: '5h' });
+    const userId = user.get('_id');
+    const token = jwt.sign({ uid: userId }, configs.SECRET_KEY, { expiresIn: '5h' });
     data = {
-      // eslint-disable-next-line object-shorthand
+      userId: userId,
       token: token,
     };
   } else {
