@@ -6,6 +6,7 @@ function notFoundRequestHandler(req, res, next) {
       data: {},
     },
   });
-};
+  next();
+}
 
 export default notFoundRequestHandler;
