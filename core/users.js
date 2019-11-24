@@ -12,18 +12,15 @@ import User from 'db/models/User';
  * @returns {Object} response data: User
  */
 async function findUserById(userId) {
-  let data = {};
   const user = await User.findOne(
     { _id: userId },
     { _id: 0, password_hashed: 0, password_salt: 0 },
   );
 
   if (!user) {
-    const err = new UserNotFoundError();
-    throw err;
+    throw new UserNotFoundError();
   }
-  data = user;
-  return data;
+  return user;
 }
 
 /**
@@ -39,7 +36,7 @@ async function checkLogin(usr, pwd) {
     const err = new InvalidUsernameError();
     throw err;
   }
-  if (encryption.isEqual(pwd, user.get('password_hashed'))) {
+  if (encryption.isEqual(pwd, user.password_hashed)) {
     const userId = user.get('_id');
     const token = jwt.sign({ uid: userId }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
     data = {
