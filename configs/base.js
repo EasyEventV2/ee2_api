@@ -8,6 +8,6 @@ const baseConfig = {
   DB_USER,
   DB_PWD,
   JWT_SECRET_KEY,
-}
+};
 
 export default baseConfig;
