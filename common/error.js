@@ -35,7 +35,7 @@ export class InvalidUsernameError extends ServerAPIError {
   }
 }
 
-export class PasswordNotMatchError extends ServerAPIError {
+export class InvalidPasswordError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
       code: 40002,

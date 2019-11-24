@@ -2,7 +2,7 @@
 import configs from 'configs/index';
 import jwt from 'jsonwebtoken';
 import encryption from 'utils/encryption';
-import { UserNotFoundError, PasswordNotMatchError } from 'common/error';
+import { UserNotFoundError, InvalidPasswordError, InvalidUsernameError } from 'common/error';
 import User from 'db/models/User';
 
 /**
@@ -36,18 +36,18 @@ async function checkLogin(usr, pwd) {
   let data = {};
   const user = await User.findOne({ username: usr });
   if (!user) {
-    const err = new UserNotFoundError({ code: 40402, message: 'Invalid Username' });
+    const err = new InvalidUsernameError();
     throw err;
   }
   if (encryption.isEqual(pwd, user.get('password_hashed'))) {
     const userId = user.get('_id');
-    const token = jwt.sign({ uid: userId }, configs.SECRET_KEY, { expiresIn: '5h' });
+    const token = jwt.sign({ uid: userId }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
     data = {
       userId: userId,
       token: token,
     };
   } else {
-    throw new PasswordNotMatchError();
+    throw new InvalidPasswordError();
   }
   return data;
 }
