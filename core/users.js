@@ -33,8 +33,7 @@ async function checkLogin(usr, pwd) {
   let data = {};
   const user = await User.findOne({ username: usr });
   if (!user) {
-    const err = new InvalidUsernameError();
-    throw err;
+    throw new InvalidUsernameError();
   }
   if (encryption.isEqual(pwd, user.password_hashed)) {
     const userId = user.get('_id');
