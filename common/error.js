@@ -25,10 +25,20 @@ export class UserNotFoundError extends ServerAPIError {
   }
 }
 
-export class PasswordNotMatchError extends ServerAPIError {
+export class InvalidUsernameError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
       code: 40001,
+      message: 'Invalid Username',
+      ...payload,
+    });
+  }
+}
+
+export class PasswordNotMatchError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40002,
       message: 'Invalid Password',
       ...payload,
     });
@@ -50,6 +60,16 @@ export class InvalidTokenError extends ServerAPIError {
     super({
       code: 40301,
       message: 'Fobbiden: Invalid Token',
+      ...payload,
+    });
+  }
+}
+
+export class TokenExpiredError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40302,
+      message: 'Fobbiden: Token Expired',
       ...payload,
     });
   }

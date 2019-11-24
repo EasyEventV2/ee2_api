@@ -1,6 +1,6 @@
 import configs from 'configs/index';
-import jwt, { TokenExpiredError } from 'jsonwebtoken';
-import { UnauthorizedError, InvalidTokenError } from 'common/error';
+import jwt, { TokenExpiredError as JWTExpiredError } from 'jsonwebtoken';
+import { UnauthorizedError, InvalidTokenError, TokenExpiredError } from 'common/error';
 
 const secretKey = configs.SECRET_KEY;
 
@@ -11,8 +11,8 @@ function verifyToken(req, res, next) {
     const token = splitedHeader[1];
     jwt.verify(token, secretKey, (err, result) => {
       if (err) {
-        if (err instanceof TokenExpiredError) {
-          throw new InvalidTokenError({ code: 40302, message: 'TokenExpired' });
+        if (err instanceof JWTExpiredError) {
+          throw new TokenExpiredError();
         }
         throw new InvalidTokenError();
       }
