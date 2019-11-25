@@ -11,19 +11,6 @@ const getUserById = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    const dataResponse = await userCore.checkLogin(username, password);
-    res.json({
-      data: dataResponse,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
 export default {
   getUserById,
-  login,
 };
