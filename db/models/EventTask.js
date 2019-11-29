@@ -3,7 +3,6 @@ import { Schema, model } from 'mongoose';
 const SchemaTypes = Schema.Types;
 
 const eventTaskSchema = new Schema({
-  _id: SchemaTypes.ObjectId,
   event: {
     type: SchemaTypes.ObjectId,
     ref: 'Event',
