@@ -25,11 +25,11 @@ export class UserNotFoundError extends ServerAPIError {
   }
 }
 
-export class InvalidUsernameError extends ServerAPIError {
+export class InvalidUsernameOrEmailError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
       code: 40001,
-      message: 'Invalid Username',
+      message: 'Invalid Username or Email',
       ...payload,
     });
   }
