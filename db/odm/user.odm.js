@@ -1,4 +1,3 @@
-/* eslint-disable object-shorthand */
 import User from 'db/models/User';
 
 /**
@@ -13,10 +12,14 @@ async function findById(id) {
   return user;
 }
 
-async function findByUsernameOrEmail(username) {
+/**
+ *
+ * @param {String} uname
+ */
+async function findByUsernameOrEmail(uname) {
   const user = await User.findOne().or([
-    { username: username },
-    { email: username },
+    { username: uname },
+    { email: uname },
   ]);
   return user;
 }
