@@ -13,10 +13,10 @@ async function findById(id) {
   return user;
 }
 
-async function findByUsernameOrEmail(username, email) {
+async function findByUsernameOrEmail(username) {
   const user = await User.findOne().or([
     { username: username },
-    { email: email },
+    { email: username },
   ]);
   return user;
 }

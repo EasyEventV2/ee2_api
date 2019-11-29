@@ -11,9 +11,9 @@ import userODM from 'db/odm/user.odm';
  * @param {String} pwd
  * @returns {Object} response data: bearer token with userId if success
  */
-async function checkLogin(usr, email, pwd) {
+async function checkLogin(usr, pwd) {
   let data = {};
-  const user = await userODM.findByUsernameOrEmail(usr, email);
+  const user = await userODM.findByUsernameOrEmail(usr);
   if (!user) {
     throw new InvalidUsernameError();
   }

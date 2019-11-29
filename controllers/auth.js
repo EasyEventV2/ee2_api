@@ -2,8 +2,8 @@ import authCore from 'core/auth';
 
 const login = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    const dataResponse = await authCore.checkLogin(username, email, password);
+    const { username, password } = req.body;
+    const dataResponse = await authCore.checkLogin(username, password);
     res.json({
       data: dataResponse,
     });
