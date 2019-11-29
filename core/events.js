@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { CastError } from 'mongoose';
-import Event from 'db/models/Event';
-import Group from 'db/models/Group';
+import eventODM from 'db/odm/event.odm';
 
 /**
  *
@@ -10,13 +7,8 @@ import Group from 'db/models/Group';
  * @returns {Array<Object>} list of Events
  */
 async function findEventsByUser(userId) {
-  let data = {};
-  const listEvents = await Group.find(
-    { users: userId },
-    { _id: 0 },
-  ).populate('event').select('event');
-  data = listEvents;
-  return data;
+  const listEvents = await eventODM.findByUserId(userId);
+  return listEvents;
 }
 
 

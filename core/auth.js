@@ -3,7 +3,7 @@ import configs from 'configs/index';
 import jwt from 'jsonwebtoken';
 import encryption from 'utils/encryption';
 import { InvalidPasswordError, InvalidUsernameError } from 'common/error';
-import User from 'db/models/User';
+import userODM from 'db/odm/user.odm';
 
 /**
  * Check if given information is correct for login
@@ -11,9 +11,9 @@ import User from 'db/models/User';
  * @param {String} pwd
  * @returns {Object} response data: bearer token with userId if success
  */
-async function checkLogin(usr, pwd) {
+async function checkLogin(usr, email, pwd) {
   let data = {};
-  const user = await User.findOne({ username: usr });
+  const user = await userODM.findByUsernameOrEmail(usr, email);
   if (!user) {
     throw new InvalidUsernameError();
   }
