@@ -3,7 +3,6 @@ import { Schema, model } from 'mongoose';
 const SchemaTypes = Schema.Types;
 
 const eventSchema = new Schema({
-  _id: SchemaTypes.ObjectId,
   name: String,
   description: String,
   category: [{
@@ -15,6 +14,12 @@ const eventSchema = new Schema({
     email: String,
     facebook: String,
     website: String,
+  },
+  location: {
+    place: String,
+    address: String,
+    latitude: Number,
+    longitude: Number,
   },
   start_time: Date,
   end_time: Date,
