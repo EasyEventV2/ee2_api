@@ -1,15 +1,12 @@
+import asyncDec from 'utils/asyncDecorator';
 import userCore from 'core/users';
 
-const getUserById = async (req, res, next) => {
-  try {
-    const dataResponse = await userCore.findUserById(req.params.userId);
-    res.json({
-      data: dataResponse,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+const getUserById = asyncDec(async (req, res) => {
+  const dataResponse = await userCore.findUserById(req.params.userId);
+  res.json({
+    data: dataResponse,
+  });
+});
 
 export default {
   getUserById,
