@@ -15,6 +15,12 @@ const eventSchema = new Schema({
     facebook: String,
     website: String,
   },
+  location: {
+    place: String,
+    address: String,
+    latitude: Number,
+    longitude: Number,
+  },
   start_time: Date,
   end_time: Date,
 });

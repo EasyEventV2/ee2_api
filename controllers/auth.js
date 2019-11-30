@@ -1,16 +1,13 @@
+import asyncDec from 'utils/asyncDecorator';
 import authCore from 'core/auth';
 
-const login = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    const dataResponse = await authCore.checkLogin(username, password);
-    res.json({
-      data: dataResponse,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+const login = asyncDec(async (req, res) => {
+  const { username, password } = req.body;
+  const dataResponse = await authCore.checkLogin(username, password);
+  res.json({
+    data: dataResponse,
+  });
+});
 
 export default {
   login,
