@@ -15,16 +15,6 @@ export class ServerAPIError extends Error {
   }
 }
 
-export class UserNotFoundError extends ServerAPIError {
-  constructor({ ...payload }) {
-    super({
-      code: 40401,
-      message: 'User Not Found',
-      ...payload,
-    });
-  }
-}
-
 export class InvalidUsernameOrEmailError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -70,6 +60,26 @@ export class TokenExpiredError extends ServerAPIError {
     super({
       code: 40302,
       message: 'Fobbiden: Token Expired',
+      ...payload,
+    });
+  }
+}
+
+export class UserNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40401,
+      message: 'User Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class PageNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40402,
+      message: 'Page Not Found',
       ...payload,
     });
   }
