@@ -1,6 +1,8 @@
-import { SelectField } from 'common/constant';
+import constant from 'common/constant';
 import Event from 'db/models/Event';
 import Group from 'db/models/Group';
+
+const { SelectField } = constant;
 
 /**
  *
