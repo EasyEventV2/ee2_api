@@ -9,6 +9,7 @@ import Group from 'db/models/Group';
 async function findByUserId(userId) {
   const listEvents = await Group.find(
     { users: userId },
+    { _id: 0 }
   ).populate('event');
   return listEvents;
 }

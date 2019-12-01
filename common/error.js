@@ -74,3 +74,13 @@ export class TokenExpiredError extends ServerAPIError {
     });
   }
 }
+
+export class PageNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40402,
+      message: 'Page Not Found',
+      ...payload,
+    });
+  }
+}
