@@ -74,6 +74,7 @@ export class UserNotFoundError extends ServerAPIError {
     });
   }
 }
+
 export class PageNotFoundError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
