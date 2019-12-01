@@ -15,16 +15,6 @@ export class ServerAPIError extends Error {
   }
 }
 
-export class UserNotFoundError extends ServerAPIError {
-  constructor({ ...payload }) {
-    super({
-      code: 40401,
-      message: 'User Not Found',
-      ...payload,
-    });
-  }
-}
-
 export class InvalidUsernameOrEmailError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -75,6 +65,15 @@ export class TokenExpiredError extends ServerAPIError {
   }
 }
 
+export class UserNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40401,
+      message: 'User Not Found',
+      ...payload,
+    });
+  }
+}
 export class PageNotFoundError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
