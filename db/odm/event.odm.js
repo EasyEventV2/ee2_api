@@ -1,11 +1,6 @@
-/* eslint-disable no-unused-vars */
+import { SelectField } from 'common/constant';
 import Event from 'db/models/Event';
 import Group from 'db/models/Group';
-
-const SELECT_FIELD = {
-  YES: 1,
-  NO: 0,
-};
 
 /**
  *
@@ -14,7 +9,7 @@ const SELECT_FIELD = {
 async function findByUserId(userId) {
   const listEvents = await Group.find(
     { users: userId },
-    { _id: SELECT_FIELD.NO }, // This is Group'id, that will not be returned.
+    { _id: SelectField.NO }, // This is Group'id, that will not be returned.
   ).populate('event');
   return listEvents;
 }
