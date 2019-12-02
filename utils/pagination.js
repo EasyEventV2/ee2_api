@@ -11,7 +11,11 @@ function getPaginatedObject(totalItems, itemsPerPage, page) {
   const currentPage = (!page) ? 1 : parseInt(page, 10);
   if (!currentPage // parsing Error
     || (currentPage && (currentPage < 0 || currentPage > totalPages))) {
-    throw new PageNotFoundError();
+    throw new PageNotFoundError({
+      data: {
+        totalPages,
+      },
+    });
   }
   const offset = (currentPage - 1) * itemsPerPage;
   const limit = itemsPerPage;
