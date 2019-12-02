@@ -6,4 +6,8 @@ const SelectField = {
   NO: 0,
 };
 
-export default { SelectField };
+const ItemsPerPage = {
+  USER_EVENTS_LIST: 10,
+};
+
+export default { SelectField, ItemsPerPage };
