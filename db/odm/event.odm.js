@@ -16,6 +16,10 @@ async function findByUserId(userId, offset, limit) {
   return listEvents;
 }
 
+/**
+ *
+ * @param {String} userId
+ */
 async function countByUserId(userId) {
   const totalEvents = await Group.countDocuments({ users: userId });
   return totalEvents;

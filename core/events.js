@@ -6,10 +6,10 @@ const { ItemsPerPage } = constant;
 
 /**
  *
- * Return list of events that associate with an user
+ * Return list of events that associate with an user (pagination)
  * @param {String} userId
  * @param {Number} page
- * @returns {Array<Object>} list of Events
+ * @returns {Object} pagination info with list of Events
  */
 async function findEventsByUser(userId, page) {
   const totalEvents = await eventODM.countByUserId(userId);
