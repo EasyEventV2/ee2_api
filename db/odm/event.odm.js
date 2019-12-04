@@ -12,7 +12,7 @@ async function findByUserId(userId, offset, limit) {
   const listEvents = await Group.find(
     { users: userId },
     { _id: SelectField.NO }, // This is Group'id, that will not be returned.
-  ).populate('event').skip(offset).limit(limit);
+  ).populate('event', '_id name start_time end_time').skip(offset).limit(limit);
   return listEvents;
 }
 
@@ -36,8 +36,21 @@ async function findAll() {
   return listEvents;
 }
 
+/**
+ * Find an event that matches given ID
+ * @param {String} id
+ * @returns {Object} event
+ */
+async function findById(id) {
+  const event = await Event.findOne(
+    { _id: id },
+  );
+  return event;
+}
+
 export default {
   findByUserId,
   countByUserId,
   findAll,
+  findById,
 };
