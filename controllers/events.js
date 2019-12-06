@@ -8,6 +8,14 @@ const getEventsByUserId = asyncDec(async (req, res) => {
   });
 });
 
+const getEventInfo = asyncDec(async (req, res) => {
+  const dataResponse = await eventCore.findEventDetails(req.params.eventId);
+  res.json({
+    data: dataResponse,
+  });
+});
+
 export default {
   getEventsByUserId,
+  getEventInfo,
 };

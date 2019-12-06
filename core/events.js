@@ -23,5 +23,19 @@ async function findEventsByUser(userId, page) {
   };
 }
 
+/**
+ *
+ * @param {String} eventId
+ */
+async function findEventDetails(eventId) {
+  const event = await eventODM.findById(eventId);
+  if (!event) {
+    throw Error('Not Found Event');
+  }
+  return event;
+}
 
-export default { findEventsByUser };
+export default {
+  findEventsByUser,
+  findEventDetails,
+};
