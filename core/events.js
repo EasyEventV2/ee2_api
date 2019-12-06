@@ -1,6 +1,7 @@
 import eventODM from 'db/odm/event.odm';
 import pagination from 'utils/pagination';
 import constant from 'common/constant';
+import { EventNotFoundError } from 'common/error';
 
 const { ItemsPerPage } = constant;
 
@@ -30,7 +31,7 @@ async function findEventsByUser(userId, page) {
 async function findEventDetails(eventId) {
   const event = await eventODM.findById(eventId);
   if (!event) {
-    throw Error('Not Found Event');
+    throw new EventNotFoundError();
   }
   return event;
 }

@@ -35,6 +35,16 @@ export class InvalidPasswordError extends ServerAPIError {
   }
 }
 
+export class InvalidEmailFormatError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40003,
+      message: 'Email is not valid',
+      ...payload,
+    });
+  }
+}
+
 export class UnauthorizedError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -80,6 +90,36 @@ export class PageNotFoundError extends ServerAPIError {
     super({
       code: 40402,
       message: 'Page Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class GuestNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40403,
+      message: 'Guest Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class EventNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40404,
+      message: 'Event Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class EmailVerifiedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40901,
+      message: 'This email is already verified',
       ...payload,
     });
   }
