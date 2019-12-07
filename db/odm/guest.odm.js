@@ -26,20 +26,10 @@ async function countByEventId(eventId) {
 
 /**
  *
- * @param {Object} guest
- */
-async function save(guest) {
-  const newGuest = new Guest(guest);
-  await newGuest.save();
-  return newGuest;
-}
-
-/**
- *
  * @param {String} id
  */
 async function findById(id) {
-  const guest = Guest.findOne(
+  const guest = await Guest.findOne(
     { _id: id },
   );
   return guest;
@@ -47,14 +37,37 @@ async function findById(id) {
 
 /**
  *
+ * @param {String} eventId
  * @param {String} email
  */
-async function findVerifiedEmail(email) {
-  const verifiedGuest = await Guest.findOne().and([
+async function findByEventIdAndEmail(eventId, email) {
+  const guest = await Guest.findOne().and([
+    { event: eventId },
     { email },
-    { 'status.email_verified': true },
   ]);
-  return verifiedGuest;
+  return guest;
+}
+
+/**
+ *
+ * @param {String} code
+ */
+async function findByTicketStatus(code) {
+  const guest = await Guest.findOne().and([
+    { 'ticket.code': code },
+    { 'ticket.checkin_at': { $eq: null } },
+  ]);
+  return guest;
+}
+
+/**
+ *
+ * @param {Object} guest
+ */
+async function save(guest) {
+  const newGuest = new Guest(guest);
+  await newGuest.save();
+  return newGuest;
 }
 
 /**
@@ -74,8 +87,9 @@ async function update(guestId, updates) {
 export default {
   findByEventId,
   countByEventId,
-  save,
   findById,
-  findVerifiedEmail,
+  findByEventIdAndEmail,
+  findByTicketStatus,
+  save,
   update,
 };

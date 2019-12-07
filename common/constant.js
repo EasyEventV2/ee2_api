@@ -8,6 +8,7 @@ const SelectField = {
 
 const ItemsPerPage = {
   USER_EVENTS_LIST: 10,
+  GUESTS_LIST: 10,
 };
 
 export default { SelectField, ItemsPerPage };

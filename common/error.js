@@ -45,6 +45,16 @@ export class InvalidEmailFormatError extends ServerAPIError {
   }
 }
 
+export class UnknownActionError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40004,
+      message: 'Unknown specified action',
+      ...payload,
+    });
+  }
+}
+
 export class UnauthorizedError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -120,6 +130,36 @@ export class EmailVerifiedError extends ServerAPIError {
     super({
       code: 40901,
       message: 'This email is already verified',
+      ...payload,
+    });
+  }
+}
+
+export class GuestExistedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40902,
+      message: 'This email is already registered with this event',
+      ...payload,
+    });
+  }
+}
+
+export class TicketApprovedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40903,
+      message: 'This ticket is already approved with this event',
+      ...payload,
+    });
+  }
+}
+
+export class TicketCheckedInError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40904,
+      message: 'This ticket is already checked in with this event',
       ...payload,
     });
   }
