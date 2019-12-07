@@ -28,7 +28,7 @@ const guestSchema = new Schema({
     issue_at: { type: Date, default: null },
     checkin_at: { type: Date, default: null },
   },
-});
+}, { versionKey: false });
 
 const Guest = model('Guest', guestSchema, 'guests');
 export default Guest;
