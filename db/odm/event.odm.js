@@ -26,10 +26,10 @@ async function countByUserId(userId) {
 }
 
 /**
- *
+ * Get all events that theirs end_time are greater than current time (not ended yet)
  */
 async function findAll() {
-  const currentTime = new Date();
+  const currentTime = Date.now();
   const listEvents = await Event.find(
     { end_time: { $gte: currentTime } },
   );
