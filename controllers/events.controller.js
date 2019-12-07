@@ -1,5 +1,5 @@
-import asyncDec from 'utils/asyncDecorator';
-import eventCore from 'core/events';
+import asyncDec from 'utils/asyncDecoration';
+import eventCore from 'core/events.core';
 
 const getEventsByUserId = asyncDec(async (req, res) => {
   const dataResponse = await eventCore.findEventsByUser(req.params.userId, req.query.p);

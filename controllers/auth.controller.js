@@ -1,5 +1,5 @@
-import asyncDec from 'utils/asyncDecorator';
-import authCore from 'core/auth';
+import asyncDec from 'utils/asyncDecoration';
+import authCore from 'core/auth.core';
 
 const login = asyncDec(async (req, res) => {
   const { username, password } = req.body;
