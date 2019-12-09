@@ -1,5 +1,6 @@
 import constant from 'common/constant';
 import guestODM from 'db/odm/guest.odm';
+import userODM from 'db/odm/user.odm';
 import { Types } from 'mongoose';
 import pagination from 'utils/pagination';
 import eventCore from 'core/events.core';
@@ -9,7 +10,7 @@ import {
 } from 'common/error';
 import uuid from 'utils/uuid';
 
-const { ItemsPerPage } = constant;
+const { ItemsPerPage, GuestAction } = constant;
 
 /**
  *
@@ -58,6 +59,10 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
     throw new GuestExistedError({ data: exGuest });
   }
 
+  let emailVerified = false;
+  const verifiedUser = await userODM.findByVerifiedEmail(email);
+  emailVerified = !!(verifiedUser);
+
   const newGuest = {
     event: Types.ObjectId(eventId),
     email,
@@ -69,7 +74,7 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
       something,
     },
     status: {
-      email_verified: !!(userId),
+      email_verified: emailVerified,
       ticket_approved: false,
     },
     ticket: {
@@ -97,7 +102,7 @@ async function updateGuest(guestId, action) {
   }
   let updates = {};
   switch (action) {
-    case 'verify':
+    case GuestAction.VERIFY:
       if (guest.status.email_verified) {
         throw new EmailVerifiedError();
       }
@@ -106,7 +111,7 @@ async function updateGuest(guestId, action) {
       };
       break;
 
-    case 'approve':
+    case GuestAction.APPROVE:
       if (guest.status.ticket_approved) {
         throw new TicketApprovedError();
       }
@@ -117,7 +122,7 @@ async function updateGuest(guestId, action) {
       };
       break;
 
-    case 'checkin':
+    case GuestAction.CHECK_IN:
       if (guest.ticket.checkin_at !== null) {
         throw new TicketCheckedInError();
       }

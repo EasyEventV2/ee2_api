@@ -11,4 +11,14 @@ const ItemsPerPage = {
   GUESTS_LIST: 10,
 };
 
-export default { SelectField, ItemsPerPage };
+const GuestAction = {
+  VERIFY: 'verify',
+  APPROVE: 'approve',
+  CHECK_IN: 'checkin',
+};
+
+export default {
+  SelectField,
+  ItemsPerPage,
+  GuestAction,
+};
