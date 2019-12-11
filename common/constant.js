@@ -6,9 +6,15 @@ const SelectField = {
   NO: 0,
 };
 
+const ProjectedField = {
+  EVENTS_LIST: '_id name start_time end_time',
+  CATEGORY_DETAIL: '_id value',
+};
+
 const ItemsPerPage = {
   USER_EVENTS_LIST: 10,
   GUESTS_LIST: 10,
+  ALL_EVENTS_LIST: 20,
 };
 
 const GuestAction = {
@@ -19,6 +25,7 @@ const GuestAction = {
 
 export default {
   SelectField,
+  ProjectedField,
   ItemsPerPage,
   GuestAction,
 };

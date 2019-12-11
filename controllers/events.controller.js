@@ -15,7 +15,15 @@ const getEventInfo = asyncDec(async (req, res) => {
   });
 });
 
+const getAllEvents = asyncDec(async (req, res) => {
+  const dataResponse = await eventCore.findAllEvents(req.query.p);
+  res.json({
+    data: dataResponse,
+  });
+});
+
 export default {
   getEventsByUserId,
   getEventInfo,
+  getAllEvents,
 };
