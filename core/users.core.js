@@ -1,4 +1,8 @@
-import { UserNotFoundError, TakenUsernameError, TakenEmailError, InvalidEmailFormatError } from 'common/error';
+import configs from 'configs/index';
+import jwt from 'jsonwebtoken';
+import {
+  UserNotFoundError, TakenUsernameError, TakenEmailError, InvalidEmailFormatError,
+} from 'common/error';
 import userODM from 'db/odm/user.odm';
 import encryption from 'utils/encryption';
 import validation from 'utils/validation';
@@ -47,9 +51,13 @@ async function saveNewUser(userInfo) {
   };
 
   const savedUser = await userODM.save(newUser);
-  return {
-    savedUser,
+  const token = jwt.sign({ uid: savedUser.id }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
+
+  const data = {
+    userId: savedUser.id,
+    token,
   };
+  return data;
 }
 
 export default {
