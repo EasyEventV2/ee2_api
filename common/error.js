@@ -164,3 +164,23 @@ export class TicketCheckedInError extends ServerAPIError {
     });
   }
 }
+
+export class TakenUsernameError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40905,
+      message: 'Username has been taken',
+      ...payload,
+    });
+  }
+}
+
+export class TakenEmailError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40906,
+      message: 'Email has been taken',
+      ...payload,
+    });
+  }
+}
