@@ -7,6 +7,11 @@ const guestSchema = new Schema({
     type: SchemaTypes.ObjectId,
     ref: 'Event',
   },
+  user: {
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
+    default: null,
+  },
   email: String,
   info: {
     phone_number: String,
@@ -19,11 +24,11 @@ const guestSchema = new Schema({
     ticket_approved: Boolean,
   },
   ticket: {
-    code: String,
-    issue_at: { type: Date, default: 0 },
-    checkin_at: { type: Date, default: 0 },
+    code: { type: String, default: null },
+    issue_at: { type: Date, default: null },
+    checkin_at: { type: Date, default: null },
   },
-});
+}, { versionKey: false });
 
 const Guest = model('Guest', guestSchema, 'guests');
 export default Guest;

@@ -1,4 +1,7 @@
 import User from 'db/models/User';
+import constant from 'common/constant';
+
+const { SelectField } = constant;
 
 /**
  *
@@ -7,7 +10,7 @@ import User from 'db/models/User';
 async function findById(id) {
   const user = await User.findOne(
     { _id: id },
-    { password_hashed: 0 },
+    { password_hashed: SelectField.NO },
   );
   return user;
 }
@@ -24,7 +27,16 @@ async function findByUsernameOrEmail(uname) {
   return user;
 }
 
+async function findByVerifiedEmail(email) {
+  const user = await User.findOne({}, { password_hashed: SelectField.NO }).and([
+    { email },
+    { email_verified: true },
+  ]);
+  return user;
+}
+
 export default {
   findById,
   findByUsernameOrEmail,
+  findByVerifiedEmail,
 };

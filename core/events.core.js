@@ -1,6 +1,7 @@
 import eventODM from 'db/odm/event.odm';
 import pagination from 'utils/pagination';
 import constant from 'common/constant';
+import { EventNotFoundError } from 'common/error';
 
 const { ItemsPerPage } = constant;
 
@@ -23,5 +24,36 @@ async function findEventsByUser(userId, page) {
   };
 }
 
+/**
+ *
+ * @param {String} eventId
+ */
+async function findEventDetails(eventId) {
+  const event = await eventODM.findById(eventId);
+  if (!event) {
+    throw new EventNotFoundError();
+  }
+  return event;
+}
 
-export default { findEventsByUser };
+/**
+ *
+ * @param {Number} page
+ */
+async function findAllEvents(page) {
+  const totalEvents = await eventODM.countAll();
+  const paginatedObject = pagination
+    .getPaginatedObject(totalEvents, ItemsPerPage.ALL_EVENTS_LIST, page);
+  const { offset, limit, ...paginationInfo } = paginatedObject;
+  const listEvents = await eventODM.findAll(offset, limit);
+  return {
+    ...paginationInfo,
+    listItems: listEvents,
+  };
+}
+
+export default {
+  findEventsByUser,
+  findEventDetails,
+  findAllEvents,
+};

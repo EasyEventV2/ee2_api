@@ -35,6 +35,26 @@ export class InvalidPasswordError extends ServerAPIError {
   }
 }
 
+export class InvalidEmailFormatError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40003,
+      message: 'Email is not valid',
+      ...payload,
+    });
+  }
+}
+
+export class UnknownActionError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40004,
+      message: 'Unknown specified action',
+      ...payload,
+    });
+  }
+}
+
 export class UnauthorizedError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -80,6 +100,66 @@ export class PageNotFoundError extends ServerAPIError {
     super({
       code: 40402,
       message: 'Page Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class GuestNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40403,
+      message: 'Guest Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class EventNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40404,
+      message: 'Event Not Found',
+      ...payload,
+    });
+  }
+}
+
+export class EmailVerifiedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40901,
+      message: 'This email is already verified',
+      ...payload,
+    });
+  }
+}
+
+export class GuestExistedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40902,
+      message: 'This email is already registered with this event',
+      ...payload,
+    });
+  }
+}
+
+export class TicketApprovedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40903,
+      message: 'This ticket is already approved with this event',
+      ...payload,
+    });
+  }
+}
+
+export class TicketCheckedInError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40904,
+      message: 'This ticket is already checked in with this event',
       ...payload,
     });
   }
