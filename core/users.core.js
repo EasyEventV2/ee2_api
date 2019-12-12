@@ -22,6 +22,10 @@ async function findUserById(userId) {
   return user;
 }
 
+/**
+ *
+ * @param {Object} userInfo
+ */
 async function saveNewUser(userInfo) {
   const {
     username, email, password, fullName, phoneNumber,
