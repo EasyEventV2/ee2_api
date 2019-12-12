@@ -36,7 +36,24 @@ async function findEventDetails(eventId) {
   return event;
 }
 
+/**
+ *
+ * @param {Number} page
+ */
+async function findAllEvents(page) {
+  const totalEvents = await eventODM.countAll();
+  const paginatedObject = pagination
+    .getPaginatedObject(totalEvents, ItemsPerPage.ALL_EVENTS_LIST, page);
+  const { offset, limit, ...paginationInfo } = paginatedObject;
+  const listEvents = await eventODM.findAll(offset, limit);
+  return {
+    ...paginationInfo,
+    listItems: listEvents,
+  };
+}
+
 export default {
   findEventsByUser,
   findEventDetails,
+  findAllEvents,
 };

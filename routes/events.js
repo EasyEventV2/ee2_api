@@ -5,6 +5,9 @@ import verifyToken from 'middlewares/verifyToken';
 
 const router = Router();
 
+router.route('/')
+  .get(eventController.getAllEvents);
+
 router.route('/:eventId')
   .get(eventController.getEventInfo);
 
