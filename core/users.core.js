@@ -1,5 +1,11 @@
-import { UserNotFoundError } from 'common/error';
+import configs from 'configs/index';
+import jwt from 'jsonwebtoken';
+import {
+  UserNotFoundError, TakenUsernameError, TakenEmailError, InvalidEmailFormatError,
+} from 'common/error';
 import userODM from 'db/odm/user.odm';
+import encryption from 'utils/encryption';
+import validation from 'utils/validation';
 
 /**
  *
@@ -16,6 +22,49 @@ async function findUserById(userId) {
   return user;
 }
 
+/**
+ *
+ * @param {Object} userInfo
+ */
+async function saveNewUser(userInfo) {
+  const {
+    username, email, password, fullName, phoneNumber,
+  } = userInfo;
+  const exUserWithUserName = await userODM.findByUsername(username);
+  if (exUserWithUserName) {
+    throw new TakenUsernameError();
+  }
+  const exUserWithEmail = await userODM.findByEmail(email);
+  if (exUserWithEmail) {
+    throw new TakenEmailError();
+  }
+  if (!validation.isValidEmail(email)) {
+    throw new InvalidEmailFormatError();
+  }
+
+  const passwordHashed = encryption.encrypt(password);
+
+  const newUser = {
+    username,
+    password_hashed: passwordHashed,
+    email,
+    email_verified: false,
+    phone_number: phoneNumber,
+    full_name: fullName,
+    account_type: 'normal',
+  };
+
+  const savedUser = await userODM.save(newUser);
+  const token = jwt.sign({ uid: savedUser.id }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
+
+  const data = {
+    userId: savedUser.id,
+    token,
+  };
+  return data;
+}
+
 export default {
   findUserById,
+  saveNewUser,
 };

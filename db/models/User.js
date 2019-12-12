@@ -8,7 +8,7 @@ const userSchema = new Schema({
   phone_number: String,
   full_name: String,
   account_type: String,
-});
+}, { versionKey: false });
 
 const User = model('User', userSchema, 'users');
 export default User;

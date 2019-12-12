@@ -5,6 +5,9 @@ import eventController from 'controllers/events.controller';
 
 const router = Router();
 
+router.route('/')
+  .post(userController.createNewUser);
+
 router.route('/:userId')
   .get(userController.getUserById);
 

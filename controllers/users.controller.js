@@ -8,6 +8,14 @@ const getUserById = asyncDec(async (req, res) => {
   });
 });
 
+const createNewUser = asyncDec(async (req, res) => {
+  const dataResponse = await userCore.saveNewUser(req.body.userInfo);
+  res.json({
+    data: dataResponse,
+  });
+});
+
 export default {
   getUserById,
+  createNewUser,
 };
