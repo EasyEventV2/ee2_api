@@ -1,6 +1,7 @@
 import constant from 'common/constant';
 import guestODM from 'db/odm/guest.odm';
 import userODM from 'db/odm/user.odm';
+import eventODM from 'db/odm/event.odm';
 import { Types } from 'mongoose';
 import pagination from 'utils/pagination';
 import eventCore from 'core/events.core';
@@ -9,6 +10,9 @@ import {
   EmailVerifiedError, TicketApprovedError, TicketCheckedInError, UnknownActionError,
 } from 'common/error';
 import uuid from 'utils/uuid';
+import { VerifyGuestEmail, TicketEmail } from 'common/mail';
+import mailgun from 'services/mailgun';
+import QRCode from 'utils/QRCode';
 
 const { ItemsPerPage, GuestAction } = constant;
 
@@ -84,10 +88,41 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
     },
   };
 
+  if (!emailVerified) {
+    const verifyEmail = new VerifyGuestEmail({
+      to: `${newGuest.email}`,
+      html: `Xin chào ${newGuest.email} <br/>
+      Bạn đã đăng ký tham gia sự kiện ${event.name}. <br/>
+      Chúng tôi cần bạn xác nhận lại email. Vui lòng ấn vào đường dẫn sau để xác nhận: <br/>
+      <a href="#">link</a><br/>
+      Chúng tôi sẽ gửi thông tin vé sớm nhất cho bạn`,
+    });
+
+    mailgun.send(verifyEmail);
+  }
+
   const savedGuest = await guestODM.save(newGuest);
   return {
     savedGuest,
   };
+}
+
+async function sendTicketMail(guest, event, ticketCode) {
+  const dataImage = await QRCode.generateBase64Buffer(ticketCode);
+
+  const ticketMail = new TicketEmail({
+    to: `${guest.email}`,
+    html: `Xin chào ${guest.email}, lại là Easy Event đây !<br/>
+    Sau đây là vé dành cho sự kiện ${event.name} <br/>
+    <ul>
+      <li>Email: ${guest.email}</li>
+      <li>Gender: ${guest.info.gender}</li>
+    </ul>
+    <br/>
+    Bạn hãy vui lòng sử dụng mã QR Code trong file đính kèm để check in tại sự kiện nhé !`,
+    attachment: new mailgun.default.Attachment({ data: dataImage, filename: 'ticket.png' }),
+  });
+  await mailgun.send(ticketMail);
 }
 
 /**
@@ -96,14 +131,16 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
  * @param {String} action
  */
 async function updateGuest(guestId, action) {
-  const guest = guestODM.findById(guestId);
+  const guest = await guestODM.findById(guestId);
   if (!guest) {
     throw new GuestNotFoundError();
   }
+  const event = await eventODM.findById(guest.get('event'));
   let updates = {};
+  let ticketCode = null;
   switch (action) {
     case GuestAction.VERIFY:
-      if (guest.status.email_verified) {
+      if (guest.get('status.email_verified')) {
         throw new EmailVerifiedError();
       }
       updates = {
@@ -112,14 +149,17 @@ async function updateGuest(guestId, action) {
       break;
 
     case GuestAction.APPROVE:
-      if (guest.status.ticket_approved) {
+      if (guest.get('status.ticket_approve')) {
         throw new TicketApprovedError();
       }
+
+      ticketCode = uuid.generateFromString(guestId);
       updates = {
         'status.ticket_approved': true,
-        'ticket.code': uuid.generateFromString(guestId),
+        'ticket.code': ticketCode,
         'ticket.issue_at': Date.now(),
       };
+      sendTicketMail(guest, event, ticketCode);
       break;
 
     case GuestAction.CHECK_IN:
@@ -139,9 +179,15 @@ async function updateGuest(guestId, action) {
   };
 }
 
+async function findGuestByCode(code) {
+  const guest = await guestODM.findByCode(code);
+  return guest;
+}
+
 export default {
   findGuestsByEventId,
   findGuestById,
   saveNewGuestWithEventId,
   updateGuest,
+  findGuestByCode,
 };

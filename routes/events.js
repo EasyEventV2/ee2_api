@@ -18,6 +18,8 @@ router.route('/:eventId/guests')
 router.route('/:eventId/guests/:guestId')
   .get(verifyToken, guestController.getGuestInfo)
   .put(verifyToken, guestController.updateGuest);
-// TODO: implement mailgun service to send approved email or check qr here
+
+router.route('/:eventId/guests/qr')
+  .put(verifyToken, guestController.verifyQR);
 
 export default router;

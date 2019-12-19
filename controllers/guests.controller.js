@@ -30,9 +30,17 @@ const updateGuest = (asyncDec(async (req, res) => {
   });
 }));
 
+const verifyQR = (asyncDec(async (req, res) => {
+  const dataResponse = await guestCore.findGuestByCode(req.body.code);
+  res.json({
+    data: dataResponse,
+  });
+}));
+
 export default {
   getGuestsByEventId,
   getGuestInfo,
   createGuest,
   updateGuest,
+  verifyQR,
 };
