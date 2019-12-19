@@ -1,10 +1,10 @@
-import uuid from 'uuidv4';
+import { fromString } from 'uuidv4';
 
 /**
  *
  * @param {String} str
  */
-const generateFromString = (str) => uuid.fromString(str);
+const generateFromString = (str) => fromString(str);
 
 export default {
   generateFromString,
