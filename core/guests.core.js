@@ -178,14 +178,16 @@ async function updateApproveGuest(guestId) {
  *
  * @param {String} guestId
  */
-async function updateCheckinGuest(guestId) {
-  const guest = await guestODM.findById(guestId);
+async function updateCheckinGuest(ticketCode) {
+  const guest = await guestODM.findByCode(ticketCode);
   if (!guest) {
     throw new GuestNotFoundError();
   }
   if (guest.get('ticket.checkin_at') !== null) {
     throw new TicketCheckedInError();
   }
+
+  const guestId = guest.id;
   const updates = {
     'ticket.checkin_at': Date.now(),
   };

@@ -19,7 +19,4 @@ router.route('/:eventId/guests/:guestId')
   .get(verifyToken, guestController.getGuestInfo)
   .put(verifyToken, guestController.updateGuest);
 
-router.route('/:eventId/guests/qr')
-  .put(verifyToken, guestController.verifyQR);
-
 export default router;

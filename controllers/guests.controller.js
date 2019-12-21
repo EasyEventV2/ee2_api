@@ -28,7 +28,7 @@ const createGuest = (asyncDec(async (req, res) => {
 }));
 
 const updateGuest = (asyncDec(async (req, res) => {
-  const { action } = req.body;
+  const { action, ticketCode } = req.body;
   const { guestId } = req.params;
   let dataResponse = {};
   switch (action) {
@@ -39,7 +39,7 @@ const updateGuest = (asyncDec(async (req, res) => {
       dataResponse = await guestCore.updateApproveGuest(guestId);
       break;
     case GuestAction.CHECK_IN:
-      dataResponse = await guestCore.updateCheckinGuest(guestId);
+      dataResponse = await guestCore.updateCheckinGuest(ticketCode);
       break;
     default: throw new UnknownActionError();
   }
@@ -49,7 +49,7 @@ const updateGuest = (asyncDec(async (req, res) => {
   });
 }));
 
-const verifyQR = (asyncDec(async (req, res) => {
+const checkTicket = (asyncDec(async (req, res) => {
   const dataResponse = await guestCore.findGuestByCode(req.body.code);
   res.json({
     data: dataResponse,
@@ -61,5 +61,5 @@ export default {
   getGuestInfo,
   createGuest,
   updateGuest,
-  verifyQR,
+  checkTicket,
 };
