@@ -84,10 +84,18 @@ async function update(guestId, updates) {
   return updateQueryObject;
 }
 
+async function findByCode(code) {
+  const guest = await Guest.find(
+    { 'ticket.code': code },
+  );
+  return guest;
+}
+
 export default {
   findByEventId,
   countByEventId,
   findById,
+  findByCode,
   findByEventIdAndEmail,
   findByTicketStatus,
   save,

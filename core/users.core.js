@@ -6,6 +6,7 @@ import {
 import userODM from 'db/odm/user.odm';
 import encryption from 'utils/encryption';
 import validation from 'utils/validation';
+import { VerifyUserEmail } from 'common/mail';
 
 /**
  *
@@ -61,6 +62,17 @@ async function saveNewUser(userInfo) {
     userId: savedUser.id,
     token,
   };
+
+  const verifyEmail = new VerifyUserEmail({
+    to: `${savedUser.email}`,
+    html: `Xin chào ${savedUser.full_name}, <br/>
+    Bạn vừa mới đăng ký tạo tài khoản mới trên Easy-Event <br/>
+    Chúng tôi cần bạn xác nhận email đăng ký, vui lòng ấn vào đường dẫn sau để hoàn tất: <br/>
+    <a href=www.google.com.vn>link</a><br/>
+    Chúc bạn có những trải nghiệm tuyệt với cùng Easy-Event`,
+  });
+
+  verifyEmail.send();
   return data;
 }
 
