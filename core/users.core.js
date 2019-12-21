@@ -7,7 +7,6 @@ import userODM from 'db/odm/user.odm';
 import encryption from 'utils/encryption';
 import validation from 'utils/validation';
 import { VerifyUserEmail } from 'common/mail';
-import mailgun from 'services/mailgun';
 
 /**
  *
@@ -73,7 +72,7 @@ async function saveNewUser(userInfo) {
     Chúc bạn có những trải nghiệm tuyệt với cùng Easy-Event`,
   });
 
-  mailgun.send(verifyEmail);
+  verifyEmail.send();
   return data;
 }
 
