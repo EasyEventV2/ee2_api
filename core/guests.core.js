@@ -7,14 +7,14 @@ import pagination from 'utils/pagination';
 import eventCore from 'core/events.core';
 import {
   EventNotFoundError, GuestExistedError, GuestNotFoundError,
-  EmailVerifiedError, TicketApprovedError, TicketCheckedInError, UnknownActionError,
+  EmailVerifiedError, TicketApprovedError, TicketCheckedInError,
 } from 'common/error';
-import uuid from 'utils/uuid';
 import { VerifyGuestEmail, TicketEmail } from 'common/mail';
-import mailgun from 'services/mailgun';
 import QRCode from 'utils/QRCode';
+import MailgunService from 'services/mailgun';
+import { fromString } from 'uuidv4';
 
-const { ItemsPerPage, GuestAction } = constant;
+const { ItemsPerPage } = constant;
 
 /**
  *
@@ -98,7 +98,7 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
       Chúng tôi sẽ gửi thông tin vé sớm nhất cho bạn`,
     });
 
-    mailgun.send(verifyEmail);
+    verifyEmail.send();
   }
 
   const savedGuest = await guestODM.save(newGuest);
@@ -120,65 +120,86 @@ async function sendTicketMail(guest, event, ticketCode) {
     </ul>
     <br/>
     Bạn hãy vui lòng sử dụng mã QR Code trong file đính kèm để check in tại sự kiện nhé !`,
-    attachment: new mailgun.default.Attachment({ data: dataImage, filename: 'ticket.png' }),
+    attachment: new MailgunService.api.Attachment({ data: dataImage, filename: 'ticket.png' }),
   });
-  await mailgun.send(ticketMail);
+  ticketMail.send();
 }
 
 /**
  *
  * @param {String} guestId
- * @param {String} action
  */
-async function updateGuest(guestId, action) {
+async function updateVerifyGuestEmail(guestId) {
   const guest = await guestODM.findById(guestId);
   if (!guest) {
     throw new GuestNotFoundError();
   }
-  const event = await eventODM.findById(guest.get('event'));
-  let updates = {};
-  let ticketCode = null;
-  switch (action) {
-    case GuestAction.VERIFY:
-      if (guest.get('status.email_verified')) {
-        throw new EmailVerifiedError();
-      }
-      updates = {
-        'status.email_verified': true,
-      };
-      break;
-
-    case GuestAction.APPROVE:
-      if (guest.get('status.ticket_approve')) {
-        throw new TicketApprovedError();
-      }
-
-      ticketCode = uuid.generateFromString(guestId);
-      updates = {
-        'status.ticket_approved': true,
-        'ticket.code': ticketCode,
-        'ticket.issue_at': Date.now(),
-      };
-      sendTicketMail(guest, event, ticketCode);
-      break;
-
-    case GuestAction.CHECK_IN:
-      if (guest.ticket.checkin_at !== null) {
-        throw new TicketCheckedInError();
-      }
-      updates = {
-        'ticket.checkin_at': Date.now(),
-      };
-      break;
-
-    default: throw new UnknownActionError({ accepted: ['verify', 'approve', 'checkin'] });
+  if (guest.get('status.email_verified')) {
+    throw new EmailVerifiedError();
   }
+  const updates = {
+    'status.email_verified': true,
+  };
   const updatedGuest = await guestODM.update(guestId, updates);
   return {
     updatedGuest,
   };
 }
 
+/**
+ *
+ * @param {String} guestId
+ */
+async function updateApproveGuest(guestId) {
+  const guest = await guestODM.findById(guestId);
+  if (!guest) {
+    throw new GuestNotFoundError();
+  }
+  const event = await eventODM.findById(guest.get('event'));
+  if (guest.get('status.ticket_approved')) {
+    throw new TicketApprovedError();
+  }
+
+  const ticketCode = fromString(guestId);
+  const updates = {
+    'status.ticket_approved': true,
+    'ticket.code': ticketCode,
+    'ticket.issue_at': Date.now(),
+  };
+  sendTicketMail(guest, event, ticketCode);
+
+  const updatedGuest = await guestODM.update(guestId, updates);
+  return {
+    updatedGuest,
+  };
+}
+
+/**
+ *
+ * @param {String} guestId
+ */
+async function updateCheckinGuest(guestId) {
+  const guest = await guestODM.findById(guestId);
+  if (!guest) {
+    throw new GuestNotFoundError();
+  }
+  if (guest.get('ticket.checkin_at') !== null) {
+    throw new TicketCheckedInError();
+  }
+  const updates = {
+    'ticket.checkin_at': Date.now(),
+  };
+
+  const updatedGuest = await guestODM.update(guestId, updates);
+  return {
+    updatedGuest,
+  };
+}
+
+/**
+ *
+ * @param {String} code
+ */
 async function findGuestByCode(code) {
   const guest = await guestODM.findByCode(code);
   return guest;
@@ -188,6 +209,8 @@ export default {
   findGuestsByEventId,
   findGuestById,
   saveNewGuestWithEventId,
-  updateGuest,
+  updateVerifyGuestEmail,
+  updateApproveGuest,
+  updateCheckinGuest,
   findGuestByCode,
 };

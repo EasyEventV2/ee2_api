@@ -1,5 +1,9 @@
 import asyncDec from 'utils/asyncDecoration';
 import guestCore from 'core/guests.core';
+import constant from 'common/constant';
+import { UnknownActionError } from 'common/error';
+
+const { GuestAction } = constant;
 
 const getGuestsByEventId = (asyncDec(async (req, res) => {
   const dataResponse = await guestCore.findGuestsByEventId(req.params.eventId, req.query.p);
@@ -24,7 +28,22 @@ const createGuest = (asyncDec(async (req, res) => {
 }));
 
 const updateGuest = (asyncDec(async (req, res) => {
-  const dataResponse = await guestCore.updateGuest(req.params.guestId, req.body.action);
+  const { action } = req.body;
+  const { guestId } = req.params;
+  let dataResponse = {};
+  switch (action) {
+    case GuestAction.VERIFY:
+      dataResponse = await guestCore.updateVerifyGuestEmail(guestId);
+      break;
+    case GuestAction.APPROVE:
+      dataResponse = await guestCore.updateApproveGuest(guestId);
+      break;
+    case GuestAction.CHECK_IN:
+      dataResponse = await guestCore.updateCheckinGuest(guestId);
+      break;
+    default: throw new UnknownActionError();
+  }
+
   res.json({
     data: dataResponse,
   });
