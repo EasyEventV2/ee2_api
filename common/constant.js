@@ -21,6 +21,18 @@ const GuestAction = {
   VERIFY: 'verify',
   APPROVE: 'approve',
   CHECK_IN: 'checkin',
+  SCAN_QR: 'scanqr',
+};
+
+const Email = {
+  NAME: 'Easy Event',
+  ADDRESS: 'admin.easy-event@mail.namdaoduy.dev',
+};
+
+const EmailSubject = {
+  VERIFY_USER: '[Easy-Event] Xác nhận email đăng ký tài khoản',
+  VERIFY_GUEST: '[Easy-Event] Xác nhận email đăng ký tham gia sự kiện',
+  TICKET_INFO: '[Easy-Event] Vé tham dự sự kiện bởi Easy Event',
 };
 
 export default {
@@ -28,4 +40,6 @@ export default {
   ProjectedField,
   ItemsPerPage,
   GuestAction,
+  Email,
+  EmailSubject,
 };

@@ -1,5 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable max-classes-per-file */
+import constant from 'common/constant';
+import MailgunService from 'services/mailgun';
+
+const { Email, EmailSubject } = constant;
+
 class Mail {
   /**
    *
@@ -9,18 +14,24 @@ class Mail {
   constructor({
     subject, to, html, attachment,
   }) {
-    this.from = 'Easy Event <admin.easy-event@mail.namdaoduy.dev>';
-    this.subject = subject;
-    this.to = to;
-    this.html = html;
-    this.attachment = attachment || {};
+    this.data = {
+      from: `${Email.NAME} <${Email.ADDRESS}>`,
+      subject,
+      to,
+      html,
+      attachment: attachment || {},
+    };
+  }
+
+  send() {
+    return MailgunService.send(this.data);
   }
 }
 
 export class VerifyUserEmail extends Mail {
   constructor({ ...info }) {
     super({
-      subject: '[Easy-Event] Xác nhận email đăng ký tài khoản',
+      subject: `${EmailSubject.VERIFY_USER}`,
       ...info,
     });
   }
@@ -29,7 +40,7 @@ export class VerifyUserEmail extends Mail {
 export class VerifyGuestEmail extends Mail {
   constructor({ ...info }) {
     super({
-      subject: '[Easy-Event] Xác nhận email đăng ký tham gia sự kiện',
+      subject: `${EmailSubject.VERIFY_USER}`,
       ...info,
     });
   }
@@ -38,7 +49,7 @@ export class VerifyGuestEmail extends Mail {
 export class TicketEmail extends Mail {
   constructor({ ...info }) {
     super({
-      subject: '[Easy-Event] Vé tham dự sự kiện bởi Easy Event',
+      subject: `${EmailSubject.TICKET_INFO}`,
       ...info,
     });
   }
