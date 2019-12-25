@@ -85,7 +85,7 @@ async function update(guestId, updates) {
 }
 
 async function findByCode(code) {
-  const guest = await Guest.find(
+  const guest = await Guest.findOne(
     { 'ticket.code': code },
   );
   return guest;

@@ -108,7 +108,12 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
 }
 
 async function sendTicketMail(guest, event, ticketCode) {
-  const dataImage = await QRCode.generateBase64Buffer(ticketCode);
+  const data = {
+    guestId: guest.id,
+    eventId: event.id,
+    ticketCode,
+  };
+  const dataImage = await QRCode.generateBase64Buffer(data);
 
   const ticketMail = new TicketEmail({
     to: `${guest.email}`,
