@@ -16,7 +16,7 @@ const guestSchema = new Schema({
   info: {
     phone_number: String,
     gender: String,
-    answer: {
+    answers: {
       type: Object, default: null,
     },
     full_name: String,
