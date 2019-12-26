@@ -95,6 +95,16 @@ export class TokenExpiredError extends ServerAPIError {
   }
 }
 
+export class PermissionDeniedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40303,
+      message: 'Permission Denied',
+      ...payload,
+    });
+  }
+}
+
 export class UserNotFoundError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
