@@ -75,6 +75,15 @@ export class UnauthorizedError extends ServerAPIError {
   }
 }
 
+export class PermissionDeniedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40300,
+      message: 'Permission Denied',
+      ...payload,
+    });
+  }
+}
 export class InvalidTokenError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
