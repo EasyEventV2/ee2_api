@@ -39,7 +39,7 @@ async function findPendingByEventId(eventId, offset, limit) {
  * @param {String} eventId
  */
 async function countPendingByEventId(eventId) {
-  const totalGuests = await Guest.find({
+  const totalGuests = await Guest.count({
     event: eventId,
     'status.email_verified': true,
     'status.ticket_approved': false,
