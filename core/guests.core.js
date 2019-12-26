@@ -86,7 +86,7 @@ async function findGuestById(guestId) {
  */
 async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
   const {
-    email, phoneNumber, gender, major, something,
+    email, fullName, phoneNumber, gender, major, answer,
   } = guestInfo;
 
   const event = await eventCore.findEventDetails(eventId);
@@ -108,10 +108,11 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
     email,
     user: (userId) ? Types.ObjectId(userId) : null,
     info: {
+      full_name: fullName,
       phone_number: phoneNumber,
       gender,
       major,
-      something,
+      answer,
     },
     status: {
       email_verified: emailVerified,

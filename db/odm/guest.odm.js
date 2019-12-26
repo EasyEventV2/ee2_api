@@ -30,6 +30,7 @@ async function findPendingByEventId(eventId, offset, limit) {
     event: eventId,
     'status.email_verified': true,
     'status.ticket_approved': false,
+    'ticket.checkin_at': null,
   }).skip(offset).limit(limit);
   return listGuests;
 }
@@ -43,6 +44,7 @@ async function countPendingByEventId(eventId) {
     event: eventId,
     'status.email_verified': true,
     'status.ticket_approved': false,
+    'ticket.checkin_at': null,
   });
   return totalGuests;
 }
@@ -52,6 +54,7 @@ async function findAprrovedByEventId(eventId, offset, limit) {
     event: eventId,
     'status.email_verified': true,
     'status.ticket_approved': true,
+    'ticket.checkin_at': null,
   }).skip(offset).limit(limit);
   return listGuests;
 }
@@ -61,6 +64,7 @@ async function countApprovedByEventId(eventId) {
     event: eventId,
     'status.email_verified': true,
     'status.ticket_approved': true,
+    'ticket.checkin_at': null,
   });
   return totalGuests;
 }
