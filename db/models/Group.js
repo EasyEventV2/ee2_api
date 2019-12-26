@@ -16,7 +16,7 @@ const groupSchema = new Schema({
     type: SchemaTypes.ObjectId,
     ref: 'Role',
   },
-});
+}, { versionKey: false });
 
 const Group = model('Group', groupSchema, 'groups');
 export default Group;

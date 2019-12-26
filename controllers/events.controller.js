@@ -22,8 +22,24 @@ const getAllEvents = asyncDec(async (req, res) => {
   });
 });
 
+const getAllCategories = asyncDec(async (req, res) => {
+  const dataResponse = await eventCore.findAllCategories();
+  res.json({
+    data: dataResponse,
+  });
+});
+
+const createEvent = asyncDec(async (req, res) => {
+  const dataResponse = await eventCore.saveNewEvent(req.uid, req.body);
+  res.json({
+    data: dataResponse,
+  });
+});
+
 export default {
   getEventsByUserId,
   getEventInfo,
   getAllEvents,
+  getAllCategories,
+  createEvent,
 };

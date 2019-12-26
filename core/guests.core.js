@@ -1,10 +1,12 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
+import configs from 'configs/index';
 import constant from 'common/constant';
 import guestODM from 'db/odm/guest.odm';
 import userODM from 'db/odm/user.odm';
 import eventODM from 'db/odm/event.odm';
 import { Types } from 'mongoose';
 import pagination from 'utils/pagination';
-import eventCore from 'core/events.core';
 import {
   EventNotFoundError, GuestExistedError, GuestNotFoundError,
   EmailVerifiedError, TicketApprovedError, TicketCheckedInError,
@@ -86,10 +88,10 @@ async function findGuestById(guestId) {
  */
 async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
   const {
-    email, fullName, phoneNumber, gender, answers,
+    email, full_name, phone_number, gender, answers,
   } = guestInfo;
 
-  const event = await eventCore.findEventDetails(eventId);
+  const event = await eventODM.findById(eventId);
   if (!event) {
     throw new EventNotFoundError();
   }
@@ -99,17 +101,16 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
     throw new GuestExistedError({ data: exGuest });
   }
 
-  let emailVerified = false;
-  const verifiedUser = await userODM.findByVerifiedEmail(email);
-  emailVerified = !!(verifiedUser);
+  const user = await userODM.findById(userId);
+  const emailVerified = (user && user.email_verified) ? user.email_verified : false;
 
   const newGuest = {
     event: Types.ObjectId(eventId),
     email,
     user: (userId) ? Types.ObjectId(userId) : null,
     info: {
-      full_name: fullName,
-      phone_number: phoneNumber,
+      full_name,
+      phone_number,
       gender,
       answers,
     },
@@ -124,20 +125,21 @@ async function saveNewGuestWithEventId(userId, eventId, guestInfo) {
     },
   };
 
+  const savedGuest = await guestODM.save(newGuest);
+
   if (!emailVerified) {
+    const verifyLink = `${configs.FE_URL}/verify?eventId=${eventId}&guestId=${savedGuest.id}`;
     const verifyEmail = new VerifyGuestEmail({
       to: `${newGuest.email}`,
       html: `Xin chào ${newGuest.email} <br/>
       Bạn đã đăng ký tham gia sự kiện ${event.name}. <br/>
       Chúng tôi cần bạn xác nhận lại email. Vui lòng ấn vào đường dẫn sau để xác nhận: <br/>
-      <a href="#">link</a><br/>
+      <a href="${verifyLink}">${verifyLink}</a><br/>
       Chúng tôi sẽ gửi thông tin vé sớm nhất cho bạn`,
     });
 
     verifyEmail.send();
   }
-
-  const savedGuest = await guestODM.save(newGuest);
   return {
     savedGuest,
   };
@@ -177,6 +179,10 @@ async function updateVerifyGuestEmail(guestId) {
   }
   if (guest.get('status.email_verified')) {
     throw new EmailVerifiedError();
+  }
+  if (guest.user) {
+    const userId = guest.user;
+    await guestODM.update(userId, { email_verified: true });
   }
   const updates = {
     'status.email_verified': true,
