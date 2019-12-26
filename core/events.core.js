@@ -71,14 +71,14 @@ async function saveNewEvent(userId, event) {
 
   await groupODM.save({
     event: Types.ObjectId(savedEvent.id),
-    user: [userId],
+    users: [userId],
     name: 'admin',
     role: Types.ObjectId(roleAdmin.id),
   });
 
   await groupODM.save({
     event: Types.ObjectId(savedEvent.id),
-    user: [],
+    users: [],
     name: 'staff',
     role: Types.ObjectId(roleStaff.id),
   });
