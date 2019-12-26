@@ -10,7 +10,8 @@ router.route('/')
   .post(userController.createNewUser);
 
 router.route('/:userId')
-  .get(verifyToken, verifyUser, userController.getUserById);
+  .get(verifyToken, verifyUser, userController.getUserById)
+  .put(userController.updateUser);
 
 router.route('/:userId/events')
   .get(verifyToken, verifyUser, eventController.getEventsByUserId);
