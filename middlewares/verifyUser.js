@@ -4,10 +4,7 @@ function verifyUser(req, res, next) {
   if (!req.uid) {
     throw new UnauthorizedError();
   }
-  let reqUserId = req.params.userId;
-  if (reqUserId === 'me') {
-    reqUserId = req.uid;
-  } else if (reqUserId !== req.uid) {
+  if (req.params.userId !== 'me' && req.params.userId !== req.uid) {
     throw new PermissionDeniedError();
   }
   next();
