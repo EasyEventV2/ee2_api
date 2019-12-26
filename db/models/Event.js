@@ -5,6 +5,7 @@ const SchemaTypes = Schema.Types;
 const eventSchema = new Schema({
   name: String,
   description: String,
+  image_url: String,
   category: [{
     type: SchemaTypes.ObjectId,
     ref: 'Category',

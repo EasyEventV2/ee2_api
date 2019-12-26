@@ -24,6 +24,65 @@ async function countByEventId(eventId) {
   return totalGuests;
 }
 
+
+async function findPendingByEventId(eventId, offset, limit) {
+  const listGuests = await Guest.find({
+    event: eventId,
+    'status.email_verified': true,
+    'status.ticket_approved': false,
+  }).skip(offset).limit(limit);
+  return listGuests;
+}
+
+/**
+ *
+ * @param {String} eventId
+ */
+async function countPendingByEventId(eventId) {
+  const totalGuests = await Guest.find({
+    event: eventId,
+    'status.email_verified': true,
+    'status.ticket_approved': false,
+  });
+  return totalGuests;
+}
+
+async function findAprrovedByEventId(eventId, offset, limit) {
+  const listGuests = await Guest.find({
+    event: eventId,
+    'status.email_verified': true,
+    'status.ticket_approved': true,
+  }).skip(offset).limit(limit);
+  return listGuests;
+}
+
+async function countApprovedByEventId(eventId) {
+  const totalGuests = await Guest.count({
+    event: eventId,
+    'status.email_verified': true,
+    'status.ticket_approved': true,
+  });
+  return totalGuests;
+}
+
+async function findCheckedInByEventId(eventId, offset, limit) {
+  const listGuests = await Guest.find(
+    { event: eventId },
+  )
+    .where('ticket.checkin_at')
+    .ne(null)
+    .skip(offset)
+    .limit(limit);
+  return listGuests;
+}
+
+async function countCheckedInByEventId(eventId) {
+  const totalGuests = await Guest.count(
+    { event: eventId },
+  ).where('ticket.checkin_at').ne(null);
+  return totalGuests;
+}
+
 /**
  *
  * @param {String} id
@@ -94,6 +153,12 @@ async function findByCode(code) {
 export default {
   findByEventId,
   countByEventId,
+  findPendingByEventId,
+  countPendingByEventId,
+  findAprrovedByEventId,
+  countApprovedByEventId,
+  findCheckedInByEventId,
+  countCheckedInByEventId,
   findById,
   findByCode,
   findByEventIdAndEmail,

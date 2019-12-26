@@ -3,10 +3,23 @@ import guestCore from 'core/guests.core';
 import constant from 'common/constant';
 import { UnknownActionError } from 'common/error';
 
-const { GuestAction } = constant;
+const { GuestAction, GuestType } = constant;
 
 const getGuestsByEventId = (asyncDec(async (req, res) => {
-  const dataResponse = await guestCore.findGuestsByEventId(req.params.eventId, req.query.p);
+  const { p, type } = req.query;
+  let dataResponse = {};
+  switch (type) {
+    case GuestType.PENDING:
+      dataResponse = await guestCore.findPendingGuestsByEventId(req.params.eventId, p);
+      break;
+    case GuestType.APPROVED:
+      dataResponse = await guestCore.findApprovedGuestsByEventId(req.params.eventId, p);
+      break;
+    case GuestType.CHECKED:
+      dataResponse = await guestCore.findCheckedInGuestsByEventId(req.params.eventId, p);
+      break;
+    default: dataResponse = await guestCore.findGuestsByEventId(req.params.eventId, p);
+  }
   res.json({
     data: dataResponse,
   });

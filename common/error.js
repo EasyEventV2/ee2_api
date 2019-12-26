@@ -55,6 +55,16 @@ export class UnknownActionError extends ServerAPIError {
   }
 }
 
+export class InvalidBase64InputError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40005,
+      message: 'Invalid base64 image',
+      ...payload,
+    });
+  }
+}
+
 export class UnauthorizedError extends ServerAPIError {
   constructor({ ...payload }) {
     super({

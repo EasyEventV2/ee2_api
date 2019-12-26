@@ -33,6 +33,42 @@ async function findGuestsByEventId(eventId, page) {
   };
 }
 
+async function findPendingGuestsByEventId(eventId, page) {
+  const totalGuests = await guestODM.countPendingByEventId(eventId);
+  const paginatedObject = pagination
+    .getPaginatedObject(totalGuests, ItemsPerPage.GUESTS_LIST, page);
+  const { offset, limit, ...paginationInfo } = paginatedObject;
+  const listGuests = await guestODM.findPendingByEventId(eventId, offset, limit);
+  return {
+    ...paginationInfo,
+    listItems: listGuests,
+  };
+}
+
+async function findApprovedGuestsByEventId(eventId, page) {
+  const totalGuests = await guestODM.countApprovedByEventId(eventId);
+  const paginatedObject = pagination
+    .getPaginatedObject(totalGuests, ItemsPerPage.GUESTS_LIST, page);
+  const { offset, limit, ...paginationInfo } = paginatedObject;
+  const listGuests = await guestODM.findAprrovedByEventId(eventId, offset, limit);
+  return {
+    ...paginationInfo,
+    listItems: listGuests,
+  };
+}
+
+async function findCheckedInGuestsByEventId(eventId, page) {
+  const totalGuests = await guestODM.countCheckedInByEventId(eventId);
+  const paginatedObject = pagination
+    .getPaginatedObject(totalGuests, ItemsPerPage.GUESTS_LIST, page);
+  const { offset, limit, ...paginationInfo } = paginatedObject;
+  const listGuests = await guestODM.findCheckedInByEventId(eventId, offset, limit);
+  return {
+    ...paginationInfo,
+    listItems: listGuests,
+  };
+}
+
 /**
  *
  * @param {String} guestId
@@ -215,6 +251,9 @@ async function findGuestByCode(code) {
 export default {
   findGuestsByEventId,
   findGuestById,
+  findPendingGuestsByEventId,
+  findApprovedGuestsByEventId,
+  findCheckedInGuestsByEventId,
   saveNewGuestWithEventId,
   updateVerifyGuestEmail,
   updateApproveGuest,
