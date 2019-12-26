@@ -63,12 +63,13 @@ async function saveNewUser(userInfo) {
     token,
   };
 
+  const verifyLink = `${configs.FE_URL}/verify?userId=${savedUser.id}`;
   const verifyEmail = new VerifyUserEmail({
     to: `${savedUser.email}`,
     html: `Xin chào ${savedUser.full_name}, <br/>
     Bạn vừa mới đăng ký tạo tài khoản mới trên Easy-Event <br/>
     Chúng tôi cần bạn xác nhận email đăng ký, vui lòng ấn vào đường dẫn sau để hoàn tất: <br/>
-    <a href=www.google.com.vn>link</a><br/>
+    <a href="${verifyLink}">${verifyLink}</a><br/>
     Chúc bạn có những trải nghiệm tuyệt với cùng Easy-Event`,
   });
 
@@ -76,7 +77,20 @@ async function saveNewUser(userInfo) {
   return data;
 }
 
+async function updateVerifyEmail(userId) {
+  const user = await userODM.findById(userId);
+  if (!user) {
+    throw new UserNotFoundError();
+  }
+  const updates = { email_verified: true };
+  const updatedUser = await userODM.update(userId, updates);
+  return {
+    updatedUser,
+  };
+}
+
 export default {
   findUserById,
   saveNewUser,
+  updateVerifyEmail,
 };

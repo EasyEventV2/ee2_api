@@ -66,9 +66,6 @@ async function findById(id) {
 }
 
 async function save(event) {
-  if (!event) {
-    throw Error('No Information');
-  }
   const newEvent = new Event(event);
   const savedEvent = await newEvent.save();
   return savedEvent;

@@ -8,7 +8,7 @@ const SelectField = {
 
 const ProjectedField = {
   EVENTS_LIST: '_id name start_time end_time',
-  CATEGORY_DETAIL: '_id value',
+  CATEGORY_DETAIL: '_id key value',
 };
 
 const ItemsPerPage = {
@@ -21,6 +21,10 @@ const GuestAction = {
   VERIFY: 'verify',
   APPROVE: 'approve',
   CHECK_IN: 'checkin',
+};
+
+const UserAction = {
+  VERIFY: 'verify',
 };
 
 const Email = {
@@ -45,6 +49,7 @@ export default {
   ProjectedField,
   ItemsPerPage,
   GuestAction,
+  UserAction,
   Email,
   EmailSubject,
   GuestType,
