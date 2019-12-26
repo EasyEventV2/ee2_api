@@ -40,7 +40,7 @@ export class VerifyUserEmail extends Mail {
 export class VerifyGuestEmail extends Mail {
   constructor({ ...info }) {
     super({
-      subject: `${EmailSubject.VERIFY_USER}`,
+      subject: `${EmailSubject.VERIFY_GUEST}`,
       ...info,
     });
   }
