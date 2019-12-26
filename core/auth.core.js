@@ -19,7 +19,7 @@ async function checkLogin(usr, pwd) {
   }
   if (encryption.isEqual(pwd, user.password_hashed)) {
     const userId = user.get('_id');
-    const token = jwt.sign({ uid: userId }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
+    const token = jwt.sign({ uid: userId }, configs.JWT_SECRET_KEY, { expiresIn: '365d' });
     data = {
       userId: userId,
       token: token,

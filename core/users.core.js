@@ -56,7 +56,7 @@ async function saveNewUser(userInfo) {
   };
 
   const savedUser = await userODM.save(newUser);
-  const token = jwt.sign({ uid: savedUser.id }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
+  const token = jwt.sign({ uid: savedUser.id }, configs.JWT_SECRET_KEY, { expiresIn: '365d' });
 
   const data = {
     userId: savedUser.id,
