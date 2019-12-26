@@ -1,12 +1,10 @@
 import qrcode from 'qrcode';
+import { getBase64String } from 'utils/base64';
 
 async function generateBase64Buffer(obj) {
   const objString = JSON.stringify(obj);
   let base64String = await qrcode.toDataURL(objString);
-  const b64BasePos = base64String.indexOf('base64,');
-  if (b64BasePos !== -1) {
-    base64String = base64String.substr(b64BasePos + 7);
-  }
+  base64String = getBase64String(base64String);
 
   const dataImage = Buffer.from(base64String, 'base64');
   return dataImage;

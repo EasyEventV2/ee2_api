@@ -31,6 +31,7 @@
     "deep-freeze": "0.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "imgur": "^0.3.1",
     "jsonwebtoken": "^8.5.1",
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.7.7",
