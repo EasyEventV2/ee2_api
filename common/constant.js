@@ -21,7 +21,6 @@ const GuestAction = {
   VERIFY: 'verify',
   APPROVE: 'approve',
   CHECK_IN: 'checkin',
-  SCAN_QR: 'scanqr',
 };
 
 const Email = {
@@ -35,6 +34,12 @@ const EmailSubject = {
   TICKET_INFO: '[Easy-Event] Vé tham dự sự kiện bởi Easy Event',
 };
 
+const GuestType = {
+  PENDING: 'pending',
+  APPROVED: 'approved',
+  CHECKED: 'checked',
+};
+
 export default {
   SelectField,
   ProjectedField,
@@ -42,4 +47,5 @@ export default {
   GuestAction,
   Email,
   EmailSubject,
+  GuestType,
 };
