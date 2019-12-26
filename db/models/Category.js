@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const categorySchema = new Schema({
+  key: String,
   value: String,
 });
 
