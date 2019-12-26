@@ -4,6 +4,7 @@ import Category from 'db/models/Category';
 import Event from 'db/models/Event';
 import Group from 'db/models/Group';
 import { Schema } from 'mongoose';
+import { EventNotFoundError } from 'common/error';
 
 const { SelectField, ProjectedField } = constant;
 
