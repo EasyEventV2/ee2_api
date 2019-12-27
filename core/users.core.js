@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import configs from 'configs/index';
 import jwt from 'jsonwebtoken';
 import {
@@ -29,7 +30,7 @@ async function findUserById(userId) {
  */
 async function saveNewUser(userInfo) {
   const {
-    username, email, password, fullName, phoneNumber,
+    username, email, password, full_name, phone_number,
   } = userInfo;
   const exUserWithUserName = await userODM.findByUsername(username);
   if (exUserWithUserName) {
@@ -50,8 +51,8 @@ async function saveNewUser(userInfo) {
     password_hashed: passwordHashed,
     email,
     email_verified: false,
-    phone_number: phoneNumber,
-    full_name: fullName,
+    phone_number,
+    full_name,
     account_type: 'normal',
   };
 

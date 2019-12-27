@@ -9,8 +9,7 @@ async function findByEventId(eventId) {
   const listStaffs = await Group.find(
     { event: eventId },
   )
-    .populate('users', ProjectedField.STAFFS_LIST).where('name', 'staff')
-    .select(ProjectedField.USER_FROM_GROUP);
+    .populate('users', ProjectedField.STAFFS_LIST).where('name', 'staff');
   return listStaffs;
 }
 
