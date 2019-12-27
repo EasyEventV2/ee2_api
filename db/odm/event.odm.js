@@ -16,7 +16,7 @@ async function findByUserId(userId, offset, limit) {
   const listEvents = await Group.find(
     { users: userId },
     { _id: SelectField.NO }, // This is Group'id, that will not be returned.
-  ).populate('event', ProjectedField.EVENTS_LIST).skip(offset).limit(limit);
+  ).populate('event', ProjectedField.EVENTS_LIST, 'Event', null, { sort: { start_time: -1 } }).skip(offset).limit(limit);
   return listEvents;
 }
 
@@ -41,7 +41,8 @@ async function findAll(offset, limit) {
     { contact: SelectField.NO, location: SelectField.NO, description: SelectField.NO },
   ).populate('category')
     .skip(offset)
-    .limit(limit);
+    .limit(limit)
+    .sort({ start_time: -1 });
   return listEvents;
 }
 

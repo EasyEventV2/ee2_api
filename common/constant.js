@@ -9,6 +9,8 @@ const SelectField = {
 const ProjectedField = {
   EVENTS_LIST: '_id name start_time end_time',
   CATEGORY_DETAIL: '_id key value',
+  STAFFS_LIST: '_id username email phone_number full_name',
+  USER_FROM_GROUP: 'users -_id',
 };
 
 const ItemsPerPage = {
