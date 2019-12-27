@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
+import constant from 'common/constant';
 import Group from 'db/models/Group';
 import User from 'db/models/User';
+
+const { ProjectedField } = constant;
 
 async function findByEventId(eventId) {
   const listStaffs = await Group.find(
     { event: eventId },
-  ).populate('users').where('name', 'staff');
+  )
+    .populate('users', ProjectedField.STAFFS_LIST).where('name', 'staff')
+    .select(ProjectedField.USER_FROM_GROUP);
   return listStaffs;
 }
 
