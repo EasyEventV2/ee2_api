@@ -3,18 +3,17 @@ import { Schema, model } from 'mongoose';
 const SchemaTypes = Schema.Types;
 
 const eventTaskSchema = new Schema({
-  _id: SchemaTypes.ObjectId,
-  event_id: {
+  event: {
     type: SchemaTypes.ObjectId,
     ref: 'Event',
   },
   title: String,
   description: String,
-  creator_id: {
+  creator: {
     type: SchemaTypes.ObjectId,
     ref: 'User',
   },
-  assignee_ids: [{
+  assignees: [{
     type: SchemaTypes.ObjectId,
     ref: 'User',
   }],
@@ -26,7 +25,7 @@ const eventTaskSchema = new Schema({
       title: String,
       checked: Boolean,
       resolve_history: [{
-        user_id: {
+        user: {
           type: SchemaTypes.ObjectId,
           ref: 'User',
         },
@@ -39,7 +38,7 @@ const eventTaskSchema = new Schema({
   comments: [{
     _id: SchemaTypes.ObjectId,
     timestamp: Date,
-    user_id: {
+    user: {
       type: SchemaTypes.ObjectId,
       ref: 'User',
     },

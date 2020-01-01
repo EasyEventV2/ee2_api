@@ -3,8 +3,7 @@ import { Schema, model } from 'mongoose';
 const SchemaTypes = Schema.Types;
 
 const groupSchema = new Schema({
-  _id: SchemaTypes.ObjectId,
-  event_id: {
+  event: {
     type: SchemaTypes.ObjectId,
     ref: 'Event',
   },
@@ -13,11 +12,11 @@ const groupSchema = new Schema({
     ref: 'User',
   }],
   name: String,
-  role_id: {
+  role: {
     type: SchemaTypes.ObjectId,
     ref: 'Role',
   },
-});
+}, { versionKey: false });
 
 const Group = model('Group', groupSchema, 'groups');
 export default Group;

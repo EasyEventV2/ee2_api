@@ -3,18 +3,24 @@ require('dotenv').config({
   path: `${__dirname}/.env`,
 });
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const mongo = require('./db/utils/connection');
-
+const mongo = require('db/utils/connection');
+const routes = require('routes/index').default;
+const errorHandler = require('middlewares/errorHandler').default;
+const notFoundRequestHandler = require('middlewares/notFoundRequestHandler').default;
 
 const app = express();
 const port = process.env.PORT || 3003;
 
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(morgan('dev'));
-
-app.get('/', (req, res) => {
-  res.send('<p>Welcome to EasyEvent V2 API</p>');
-});
+app.use('/', routes);
+app.use(errorHandler);
+app.use(notFoundRequestHandler);
 
 const startApp = async () => {
   try {
@@ -26,4 +32,5 @@ const startApp = async () => {
     console.log(error);
   }
 };
+
 startApp();

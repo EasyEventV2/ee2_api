@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import mongoose from 'mongoose';
 import chalk from 'chalk';
-import configs from '../../configs/index';
+import configs from 'configs/index';
 
 mongoose.Promise = global.Promise;
 
@@ -42,7 +42,7 @@ const open = async () => {
     await mongoose.connect(configs.DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: true,
+      useFindAndModify: false,
       auth: {
         user: configs.DB_USER,
         password: configs.DB_PWD,

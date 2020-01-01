@@ -3,7 +3,6 @@ import { Schema, model } from 'mongoose';
 const SchemaTypes = Schema.Types;
 
 const roleSchema = new Schema({
-  _id: SchemaTypes.ObjectId,
   permissions: [{
     type: SchemaTypes.ObjectId,
     ref: 'Permission',

@@ -1,10 +1,9 @@
-const { DB_USER, DB_PWD } = process.env;
 const DB_URL = 'mongodb://127.0.0.1:27017/easy-event-v2';
+const FE_URL = 'http://127.0.0.1:3000';
 
 const localConfig = {
   DB_URL,
-  DB_USER,
-  DB_PWD,
+  FE_URL,
 };
 
 export default localConfig;

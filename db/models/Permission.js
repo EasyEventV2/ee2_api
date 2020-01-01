@@ -1,9 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const SchemaTypes = Schema.Types;
-
 const permissionSchema = new Schema({
-  _id: SchemaTypes.ObjectId,
   data: {
     target: String,
     scope: String,
