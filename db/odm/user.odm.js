@@ -27,18 +27,6 @@ async function findByUsernameOrEmail(uname) {
   return user;
 }
 
-/**
- *
- * @param {String} email
- */
-async function findByVerifiedEmail(email) {
-  const user = await User.findOne({}, { password_hashed: SelectField.NO }).and([
-    { email },
-    { email_verified: true },
-  ]);
-  return user;
-}
-
 async function findByUsername(username) {
   const user = await User.findOne(
     { username },
@@ -69,18 +57,17 @@ async function save(user) {
  * @param {Object} updates
  */
 async function update(userId, updates) {
-  const updateQueryObject = await User.findOneAndUpdate(
+  const updatedUser = await User.findOneAndUpdate(
     { _id: userId },
     updates,
     { new: true },
   );
-  return updateQueryObject;
+  return updatedUser;
 }
 
 export default {
   findById,
   findByUsernameOrEmail,
-  findByVerifiedEmail,
   findByUsername,
   findByEmail,
   save,

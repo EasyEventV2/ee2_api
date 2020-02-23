@@ -75,6 +75,15 @@ export class UnauthorizedError extends ServerAPIError {
   }
 }
 
+export class PermissionDeniedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40300,
+      message: 'Permission Denied',
+      ...payload,
+    });
+  }
+}
 export class InvalidTokenError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -135,6 +144,16 @@ export class EventNotFoundError extends ServerAPIError {
   }
 }
 
+export class StaffNotFoundError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40405,
+      message: 'Can\'t find this staff',
+      ...payload,
+    });
+  }
+}
+
 export class EmailVerifiedError extends ServerAPIError {
   constructor({ ...payload }) {
     super({
@@ -190,6 +209,16 @@ export class TakenEmailError extends ServerAPIError {
     super({
       code: 40906,
       message: 'Email has been taken',
+      ...payload,
+    });
+  }
+}
+
+export class StaffExistedError extends ServerAPIError {
+  constructor({ ...payload }) {
+    super({
+      code: 40907,
+      message: 'This staff is already registed to this event',
       ...payload,
     });
   }

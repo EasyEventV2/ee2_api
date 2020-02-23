@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import configs from 'configs/index';
 import jwt from 'jsonwebtoken';
 import {
@@ -29,7 +30,7 @@ async function findUserById(userId) {
  */
 async function saveNewUser(userInfo) {
   const {
-    username, email, password, fullName, phoneNumber,
+    username, email, password, full_name, phone_number,
   } = userInfo;
   const exUserWithUserName = await userODM.findByUsername(username);
   if (exUserWithUserName) {
@@ -50,25 +51,26 @@ async function saveNewUser(userInfo) {
     password_hashed: passwordHashed,
     email,
     email_verified: false,
-    phone_number: phoneNumber,
-    full_name: fullName,
+    phone_number,
+    full_name,
     account_type: 'normal',
   };
 
   const savedUser = await userODM.save(newUser);
-  const token = jwt.sign({ uid: savedUser.id }, configs.JWT_SECRET_KEY, { expiresIn: '5h' });
+  const token = jwt.sign({ uid: savedUser.id }, configs.JWT_SECRET_KEY, { expiresIn: '365d' });
 
   const data = {
     userId: savedUser.id,
     token,
   };
 
+  const verifyLink = `${configs.FE_URL}/verify?userId=${savedUser.id}`;
   const verifyEmail = new VerifyUserEmail({
     to: `${savedUser.email}`,
     html: `Xin chào ${savedUser.full_name}, <br/>
     Bạn vừa mới đăng ký tạo tài khoản mới trên Easy-Event <br/>
     Chúng tôi cần bạn xác nhận email đăng ký, vui lòng ấn vào đường dẫn sau để hoàn tất: <br/>
-    <a href=www.google.com.vn>link</a><br/>
+    <a href="${verifyLink}">${verifyLink}</a><br/>
     Chúc bạn có những trải nghiệm tuyệt với cùng Easy-Event`,
   });
 
@@ -76,7 +78,20 @@ async function saveNewUser(userInfo) {
   return data;
 }
 
+async function updateVerifyEmail(userId) {
+  const user = await userODM.findById(userId);
+  if (!user) {
+    throw new UserNotFoundError();
+  }
+  const updates = { email_verified: true };
+  const updatedUser = await userODM.update(userId, updates);
+  return {
+    updatedUser,
+  };
+}
+
 export default {
   findUserById,
   saveNewUser,
+  updateVerifyEmail,
 };
