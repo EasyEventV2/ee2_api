@@ -38,7 +38,7 @@
     "morgan": "^1.9.1",
     "qrcode": "^1.4.4",
     "uuidv4": "^6.0.0",
-    "validator": "^12.1.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
